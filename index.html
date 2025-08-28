@@ -1,0 +1,4481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kidpreneur - Student Startup Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        /* Modern Color Scheme */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --secondary-dark: #5f079c;
+            --accent: #f72585;
+            --accent-dark: #d91a72;
+            --success: #4cc9f0;
+            --warning: #f9c74f;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #e9ecef;
+            --dark-border: #2d2d2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --shadow-dark: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --shadow-dark-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-accent: linear-gradient(135deg, var(--accent), #b5179e);
+            --gradient-success: linear-gradient(135deg, var(--success), #4895ef);
+            --gradient-warning: linear-gradient(135deg, var(--warning), #f9844a);
+            --gradient-info: linear-gradient(135deg, var(--info), #4cc9f0);
+            --gradient-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            --gradient-dark-bg: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background: var(--gradient-bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+            margin: 0;
+            padding: 0;
+        }
+
+        body.dark-theme {
+            color: var(--dark-text);
+            background: var(--gradient-dark-bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 5px;
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dark-theme .section-subtitle {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        /* Particle Background */
+        .particle-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.7;
+        }
+
+        .particle-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .layer-1 {
+            background: radial-gradient(circle at 20% 20%, rgba(67, 97, 238, 0.15) 0%, transparent 50%);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .layer-2 {
+            background: radial-gradient(circle at 80% 60%, rgba(114, 9, 183, 0.1) 0%, transparent 50%);
+            animation: float 25s infinite ease-in-out reverse;
+        }
+
+        .layer-3 {
+            background: radial-gradient(circle at 40% 80%, rgba(247, 37, 133, 0.08) 0%, transparent 50%);
+            animation: float 30s infinite ease-in-out;
+        }
+
+        /* Floating Navigation */
+        .floating-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 15px 30px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme .floating-nav {
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: var(--shadow-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            padding: 8px 0;
+        }
+
+        .dark-theme .nav-link {
+            color: var(--dark-text);
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+            border-radius: 3px;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-gray);
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .dark-theme .theme-toggle {
+            background: var(--dark-card);
+            color: var(--dark-text);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px) rotate(15deg);
+            box-shadow: var(--shadow);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background: var(--dark);
+            transition: var(--transition);
+            border-radius: 3px;
+            transform-origin: center;
+        }
+
+        .dark-theme .menu-toggle span {
+            background: var(--dark-text);
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: white;
+            z-index: 1001;
+            transition: var(--transition);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+            padding: 80px 20px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dark-theme .mobile-menu {
+            background: var(--dark-card);
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mobile-nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 12px 20px;
+            border-radius: 12px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dark-theme .mobile-nav-link {
+            color: var(--dark-text);
+        }
+
+        .mobile-nav-link:hover {
+            background: var(--light-gray);
+            padding-left: 25px;
+            transform: translateX(5px);
+        }
+
+        .dark-theme .mobile-nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding: 15px 20px;
+            border-radius: 12px;
+            background: var(--light-gray);
+        }
+
+        .dark-theme .mobile-theme-toggle {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background: var(--gradient-primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(247, 37, 133, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3.8rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .title-word {
+    opacity: 1 !important;
+    transform: none !important;
+    background: linear-gradient(135deg, 
+        #4361ee, #3a0ca3, #7209b7, #f72585, #4cc9f0, #4895ef, #4361ee);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    animation: gradientShift 2.5s ease infinite, 
+               textGlow 1.8s ease-in-out infinite alternate,
+               float 3.5s ease-in-out infinite;
+    text-shadow: 0 0 20px rgba(67, 97, 238, 0.7);
+    position: relative;
+    display: inline-block;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    padding: 0 4px;
+    filter: saturate(1.2) brightness(1.1);
+}
+
+.title-word:nth-child(1) {
+    animation-delay: 0s, 0s, 0s;
+    text-shadow: 0 0 25px rgba(67, 97, 238, 0.8);
+}
+
+.title-word:nth-child(2) {
+    animation-delay: 0.3s, 0.2s, 0.4s;
+    text-shadow: 0 0 25px rgba(114, 9, 183, 0.8);
+}
+
+.title-word:nth-child(3) {
+    animation-delay: 0.6s, 0.4s, 0.8s;
+    text-shadow: 0 0 25px rgba(247, 37, 133, 0.8);
+}
+
+.title-word:nth-child(4) {
+    animation-delay: 0.9s, 0.6s, 1.2s;
+    text-shadow: 0 0 25px rgba(76, 201, 240, 0.8);
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+        background-size: 350% 350%;
+    }
+    100% {
+        background-position: 0% 50%;
+        background-size: 400% 400%;
+    }
+}
+
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 15px rgba(67, 97, 238, 0.6),
+                     0 0 30px rgba(114, 9, 183, 0.4),
+                     0 0 45px rgba(247, 37, 133, 0.3),
+                     0 0 60px rgba(76, 201, 240, 0.2);
+    }
+    100% {
+        text-shadow: 0 0 25px rgba(67, 97, 238, 0.9),
+                     0 0 50px rgba(114, 9, 183, 0.7),
+                     0 0 75px rgba(247, 37, 133, 0.5),
+                     0 0 100px rgba(76, 201, 240, 0.4),
+                     0 0 125px rgba(72, 149, 239, 0.3);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-3px) rotate(0.5deg);
+    }
+    66% {
+        transform: translateY(2px) rotate(-0.5deg);
+    }
+}
+
+/* Enhanced reflection effect */
+.title-word::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 102%;
+    left: 0;
+    height: 35%;
+    width: 100%;
+    background: linear-gradient(to bottom, 
+        rgba(255,255,255,0.4) 0%, 
+        rgba(255,255,255,0.2) 40%,
+        transparent 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0.8;
+    transform: scaleY(-0.9) skewX(-15deg) perspective(50px) rotateX(40deg);
+    filter: blur(2px) brightness(1.2);
+    z-index: -1;
+}
+
+/* Add particle effect around text */
+.title-word::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 10px;
+    z-index: -2;
+    opacity: 0.5;
+    background: radial-gradient(
+        circle at center,
+        rgba(67, 97, 238, 0.2) 0%,
+        transparent 70%
+    );
+    animation: pulseAround 4s ease-in-out infinite;
+}
+
+@keyframes pulseAround {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.05);
+    }
+}
+
+/* Hover effects */
+.title-word:hover {
+    animation-duration: 1s, 0.5s, 2s;
+    filter: saturate(1.5) brightness(1.3);
+}
+
+.title-word:hover::after {
+    opacity: 0.9;
+    height: 40%;
+    filter: blur(1px) brightness(1.5);
+}
+
+.title-word:hover::before {
+    opacity: 0.8;
+    animation-duration: 2s;
+}
+
+        .hero-description {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .dark-theme .hero-description {
+            color: rgba(233, 236, 239, 0.8);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .cta-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
+        }
+
+        .cta-button:hover:before {
+            left: 100%;
+        }
+
+        .primary-glow {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+        }
+
+        .primary-glow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(67, 97, 238, 0.4);
+        }
+
+        .secondary-glow {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+
+        .secondary-glow:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(67, 97, 238, 0.3);
+        }
+
+        .accent-glow {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .accent-glow:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(247, 37, 133, 0.3);
+        }
+
+        .hero-visual {
+            display: none; /* Simplified for mobile-first approach */
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--gray);
+            animation: bounce 2s infinite;
+        }
+
+        .dark-theme .scroll-indicator {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 40px;
+            background: var(--gray);
+            margin-bottom: 10px;
+            border-radius: 1px;
+        }
+
+        .dark-theme .scroll-line {
+            background: rgba(233, 236, 239, 0.5);
+        }
+
+        .scroll-indicator.pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            padding: 100px 20px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dark-theme .stats {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+            padding: 30px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+
+        .dark-theme .stat-item {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .stat-item:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .dark-theme .stat-label {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        /* Idea Submission Section */
+        .idea-submission {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .form-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .visual-item {
+            padding: 30px;
+            border-radius: 20px;
+            background: white;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-primary);
+        }
+
+        .dark-theme .visual-item {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .visual-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .visual-item:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .visual-item i {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .visual-item h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .visual-item h3 {
+            color: var(--dark-text);
+        }
+
+        .visual-item p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .dark-theme .visual-item p {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .idea-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .idea-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--gradient-primary);
+        }
+
+        .dark-theme .idea-form {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+
+        .dark-theme .form-group label {
+            color: var(--dark-text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .dark-theme .form-control {
+            background: var(--dark-bg);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+        }
+
+        .dark-theme .form-control:focus {
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.3);
+        }
+
+        textarea.form-control {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+
+        .dark-theme .character-count {
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        .file-upload-container {
+            margin-top: 2rem;
+        }
+
+        .file-upload {
+            position: relative;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+
+        .file-upload-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 25px;
+            background: var(--light-gray);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .dark-theme .file-upload-label {
+            background: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .file-upload-label:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .file-preview {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .file-preview-item {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .file-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .file-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .file-remove:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .form-footer {
+            margin-top: 2.5rem;
+            text-align: center;
+        }
+
+        .submit-btn {
+            position: relative;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            overflow: hidden;
+            min-width: 220px;
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        .gradient-bg {
+            background: var(--gradient-primary);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(67, 97, 238, 0.5);
+        }
+
+        .submit-btn.loading {
+            pointer-events: none;
+        }
+
+        .submit-btn.loading span {
+            opacity: 0;
+        }
+
+        .btn-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .submit-btn.loading .btn-loader {
+            opacity: 1;
+        }
+
+        .loader-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            animation: loaderPulse 1.5s infinite ease-in-out;
+        }
+
+        .loader-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loader-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .form-disclaimer {
+            margin-top: 1.2rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .dark-theme .form-disclaimer {
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        .form-disclaimer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-disclaimer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Ideas Gallery Section */
+        .ideas-gallery {
+            padding: 100px 0;
+            background: rgba(248, 249, 250, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            margin: 40px;
+            position: relative;
+        }
+
+        .dark-theme .ideas-gallery {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .gallery-controls {
+            margin-bottom: 3rem;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            z-index: 2;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border: 2px solid var(--light-gray);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .dark-theme .search-box input {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+        }
+
+        .dark-theme .search-box input:focus {
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.3);
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-gray);
+            color: var(--dark);
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .dark-theme .search-clear {
+            background: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .search-clear:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid var(--light-gray);
+            border-radius: 50px;
+            background: white;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .dark-theme .filter-btn {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            justify-content: center;
+        }
+
+        .sort-select {
+            padding: 12px 18px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            background: white;
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .dark-theme .sort-select {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .sort-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+        }
+
+        .ideas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .idea-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .dark-theme .idea-card {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .idea-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .idea-card:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .card-image {
+            position: relative;
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-theme .card-category {
+            background: rgba(30, 30, 30, 0.9);
+            color: var(--dark-text);
+        }
+
+        .card-expand {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-theme .card-expand {
+            background: rgba(30, 30, 30, 0.9);
+            color: var(--dark-text);
+        }
+
+        .card-expand:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+            line-height: 1.4;
+        }
+
+        .dark-theme .card-title {
+            color: var(--dark-text);
+        }
+
+        .card-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .dark-theme .card-description {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .card-author {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-name {
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .dark-theme .author-name {
+            color: var(--dark-text);
+        }
+
+        .card-date {
+            color: var(--gray);
+        }
+
+        .dark-theme .card-date {
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .dark-theme .card-stats {
+            border-top: 1px solid var(--dark-border);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .dark-theme .stat-item {
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        .stat-item i {
+            font-size: 1.1rem;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .card-action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-gray);
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .dark-theme .card-action-btn {
+            background: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .card-action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .card-action-btn.liked {
+            background: var(--accent);
+            color: white;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-top: 3rem;
+        }
+
+        .pagination-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            border: 2px solid var(--light-gray);
+            background: white;
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .dark-theme .pagination-btn {
+            background: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .pagination-btn:hover, .pagination-btn.active {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-btn.disabled:hover {
+            transform: none;
+            background: white;
+            color: var(--dark);
+            border-color: var(--light-gray);
+        }
+
+        .dark-theme .pagination-btn.disabled:hover {
+            background: var(--dark-card);
+            color: var(--dark-text);
+            border-color: var(--dark-border);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .dark-theme .modal-container {
+            background: var(--dark-card);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-gray);
+            color: var(--dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 10;
+        }
+
+        .dark-theme .modal-close {
+            background: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .modal-close:hover {
+            background: var(--accent);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-content {
+            padding: 40px;
+        }
+
+        .modal-image {
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .modal-category {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-theme .modal-category {
+            background: rgba(30, 30, 30, 0.9);
+            color: var(--dark-text);
+        }
+
+        .modal-title {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .modal-title {
+            color: var(--dark-text);
+        }
+
+        .modal-description {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .dark-theme .modal-description {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .modal-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .dark-theme .modal-meta {
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .modal-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .modal-author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .modal-author-info h4 {
+            margin-bottom: 0.3rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .modal-author-info h4 {
+            color: var(--dark-text);
+        }
+
+        .modal-author-info p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .dark-theme .modal-author-info p {
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        .modal-date {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .dark-theme .modal-date {
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        .modal-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .modal-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .modal-stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .dark-theme .modal-stat-label {
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .modal-action-btn {
+            flex: 1;
+            padding: 16px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .modal-action-btn.primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .modal-action-btn.primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        .modal-action-btn.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .modal-action-btn.secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .modal-comments {
+            margin-top: 3rem;
+        }
+
+        .comments-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .comments-title {
+            color: var(--dark-text);
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .dark-theme .comment-input {
+            background: var(--dark-bg);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+        }
+
+        .comment-submit {
+            padding: 16px 25px;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .comment-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 1rem;
+            padding: 20px;
+            background: var(--light-gray);
+            border-radius: 15px;
+        }
+
+        .dark-theme .comment-item {
+            background: var(--dark-bg);
+        }
+
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .dark-theme .comment-author {
+            color: var(--dark-text);
+        }
+
+        .comment-date {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .dark-theme .comment-date {
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        .comment-text {
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .dark-theme .comment-text {
+            color: rgba(233, 236, 239, 0.8);
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .comment-action {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .comment-action:hover {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gradient-dark-bg);
+            color: var(--dark-text);
+            padding: 80px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .footer::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(247, 37, 133, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .footer-logo i {
+            margin-right: 10px;
+            font-size: 2.2rem;
+        }
+
+        .footer-description {
+            max-width: 400px;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            color: rgba(233, 236, 239, 0.8);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--dark-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: rgba(233, 236, 239, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-column a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-column a i {
+            font-size: 0.9rem;
+        }
+
+        .footer-newsletter h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-newsletter h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+
+        .footer-newsletter p {
+            margin-bottom: 1.5rem;
+            color: rgba(233, 236, 239, 0.8);
+            line-height: 1.7;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .newsletter-submit {
+            padding: 16px 25px;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(233, 236, 239, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            color: rgba(233, 236, 239, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Workshop Section CSS */
+.workshops {
+    padding: 100px 0;
+    position: relative;
+}
+
+.workshop-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.workshop-filter {
+    padding: 12px 24px;
+    border: 2px solid var(--light-gray);
+    border-radius: 50px;
+    background: white;
+    color: var(--dark);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.dark-theme .workshop-filter {
+    background: var(--dark-card);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+.workshop-filter:hover, .workshop-filter.active {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+}
+
+.workshops-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.workshop-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    position: relative;
+}
+
+.dark-theme .workshop-card {
+    background: var(--dark-card);
+    box-shadow: var(--shadow-dark);
+}
+
+.workshop-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+}
+
+.dark-theme .workshop-card:hover {
+    box-shadow: var(--shadow-dark-hover);
+}
+
+.workshop-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.workshop-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.workshop-card:hover .workshop-image img {
+    transform: scale(1.1);
+}
+
+.workshop-date {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .workshop-date {
+    background: var(--dark-card);
+}
+
+.workshop-date.past {
+    background: var(--light-gray);
+}
+
+.dark-theme .workshop-date.past {
+    background: var(--dark-border);
+}
+
+.date-day {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.date-month {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dark);
+    text-transform: uppercase;
+}
+
+.dark-theme .date-month {
+    color: var(--dark-text);
+}
+
+.workshop-category {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: var(--success);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.workshop-category.premium {
+    background: var(--gradient-warning);
+}
+
+.workshop-content {
+    padding: 25px;
+}
+
+.workshop-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: var(--dark);
+    line-height: 1.4;
+}
+
+.dark-theme .workshop-title {
+    color: var(--dark-text);
+}
+
+.workshop-description {
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.dark-theme .workshop-description {
+    color: rgba(233, 236, 239, 0.7);
+}
+
+.workshop-details {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.workshop-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.dark-theme .workshop-detail {
+    color: rgba(233, 236, 239, 0.6);
+}
+
+.workshop-detail i {
+    color: var(--primary);
+}
+
+.workshop-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--light-gray);
+}
+
+.dark-theme .workshop-footer {
+    border-top: 1px solid var(--dark-border);
+}
+
+.workshop-instructor {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.workshop-instructor img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.workshop-instructor span {
+    color: var(--dark);
+    font-weight: 500;
+}
+
+.dark-theme .workshop-instructor span {
+    color: var(--dark-text);
+}
+
+/* Responsive Design for Workshops */
+@media (max-width: 767px) {
+    .workshops-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .workshop-filters {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .workshop-filter {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .workshop-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    .workshop-footer .cta-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .workshop-content {
+        padding: 20px;
+    }
+    
+    .workshop-details {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            66% {
+                transform: translateY(10px) rotate(-5deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 3.2rem;
+            }
+            
+            .hero-title {
+                font-size: 4.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .form-container {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .hero-content {
+                text-align: left;
+                margin: 0;
+            }
+            
+            .hero-buttons {
+                justify-content: flex-start;
+            }
+            
+            .hero-visual {
+                display: block;
+                flex: 1;
+                position: relative;
+            }
+            
+            .hero {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .footer-content {
+                grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .nav-links, .nav-actions .cta-button {
+                display: none;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .stats {
+                margin: 20px;
+            }
+            
+            .ideas-gallery {
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .hero-description {
+                font-size: 1.1rem;
+            }
+            
+            .stat-item {
+                padding: 20px;
+            }
+            
+            .stat-number {
+                font-size: 2.2rem;
+            }
+            
+            .idea-form {
+                padding: 25px;
+            }
+            
+            .modal-content {
+                padding: 25px;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+            }
+            
+            .modal-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .floating-nav {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .cta-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .sort-options {
+                justify-content: flex-start;
+            }
+            
+            .ideas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-bottom-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 { margin-top: 1rem; }
+        .mt-2 { margin-top: 2rem; }
+        .mt-3 { margin-top: 3rem; }
+        .mt-4 { margin-top: 4rem; }
+        .mt-5 { margin-top: 5rem; }
+
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .mb-3 { margin-bottom: 3rem; }
+        .mb-4 { margin-bottom: 4rem; }
+        .mb-5 { margin-bottom: 5rem; }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particle-background">
+        <div class="particle-layer layer-1"></div>
+        <div class="particle-layer layer-2"></div>
+        <div class="particle-layer layer-3"></div>
+    </div>
+
+    <!-- Floating Navigation -->
+    <nav class="floating-nav">
+        <div class="nav-content">
+            <a href="#" class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>Kidpreneur</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Ideas</a>
+                <a href="#" class="nav-link">Resources</a>
+                <a href="#" class="nav-link">Success Stories</a>
+                <a href="#" class="nav-link">About</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="cta-button primary-glow">Submit Idea</button>
+                <button class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <a href="#" class="mobile-nav-link">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+            <a href="#" class="mobile-nav-link">
+                <i class="fas fa-lightbulb"></i>
+                Ideas
+            </a>
+            <a href="#" class="mobile-nav-link">
+                <i class="fas fa-book"></i>
+                Resources
+            </a>
+            <a href="#" class="mobile-nav-link">
+                <i class="fas fa-trophy"></i>
+                Success Stories
+            </a>
+            <a href="#" class="mobile-nav-link">
+                <i class="fas fa-info-circle"></i>
+                About
+            </a>
+            
+            <div class="mobile-theme-toggle">
+                <span>Dark Mode</span>
+                <label class="theme-switch">
+                    <input type="checkbox" id="mobileThemeToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-word" data-text="Ignite">Ignite</span>
+                    <span class="title-word" data-text="Your">Your</span>
+                    <span class="title-word" data-text="Creative">Creative</span>
+                    <span class="title-word" data-text="Spark">Spark</span>
+                </h1>
+                <p class="hero-description">
+                    Kidpreneur is the platform where young innovators share their startup ideas, get feedback, and turn their visions into reality. Join our community of future entrepreneurs!
+                </p>
+                <div class="hero-buttons">
+                    <button class="cta-button primary-glow">
+                        <i class="fas fa-lightbulb"></i>
+                        Submit Your Idea
+                    </button>
+                    <button class="cta-button secondary-glow">
+                        <i class="fas fa-compass"></i>
+                        Explore Ideas
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number" id="stat1">0</div>
+                <div class="stat-label">Ideas Shared</div>
+            </div>
+        </div>
+        
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number" id="stat2">0</div>
+                <div class="stat-label">Young Innovators</div>
+            </div>
+        </div>
+        
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number" id="stat3">0</div>
+                <div class="stat-label">Schools Participating</div>
+            </div>
+        </div>
+        
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number" id="stat4">0</div>
+                <div class="stat-label">Projects Funded</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Idea Submission Section -->
+    <section class="idea-submission">
+        <div class="container">
+            <h2 class="section-title">Share Your Brilliant Idea</h2>
+            <p class="section-subtitle">
+                Have an innovative idea that could change the world? Share it with our community and get valuable feedback from mentors and peers.
+            </p>
+            
+            <div class="form-container">
+                <div class="form-visual">
+                    <div class="visual-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Brainstorm</h3>
+                        <p>Think of innovative solutions to everyday problems</p>
+                    </div>
+                    
+                    <div class="visual-item">
+                        <i class="fas fa-pen-fancy"></i>
+                        <h3>Describe</h3>
+                        <p>Clearly explain your idea and its potential impact</p>
+                    </div>
+                    
+                    <div class="visual-item">
+                        <i class="fas fa-comments"></i>
+                        <h3>Get Feedback</h3>
+                        <p>Receive constructive feedback from our community</p>
+                    </div>
+
+                    <div class="visual-item">
+                        <i class="fas fa-hands-helping"></i>
+                        <h3>Collaborate</h3>
+                        <p>Connect with mentors and potential partners for your project</p>
+                    </div>
+                </div>
+                
+                <form class="idea-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ideaTitle">Idea Title</label>
+                            <input type="text" id="ideaTitle" class="form-control" placeholder="Enter a catchy title for your idea">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ideaCategory">Category</label>
+                            <select id="ideaCategory" class="form-control">
+                                <option value="">Select a category</option>
+                                <option value="technology">Technology</option>
+                                <option value="environment">Environment</option>
+                                <option value="education">Education</option>
+                                <option value="health">Health & Wellness</option>
+                                <option value="social">Social Good</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ideaDescription">Idea Description</label>
+                        <textarea id="ideaDescription" class="form-control" placeholder="Describe your idea in detail..."></textarea>
+                        <div class="character-count"><span id="charCount">0</span>/500 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ideaProblem">Problem Statement</label>
+                        <textarea id="ideaProblem" class="form-control" placeholder="What problem does your idea solve?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="ideaSolution">Proposed Solution</label>
+                        <textarea id="ideaSolution" class="form-control" placeholder="How does your idea solve this problem?"></textarea>
+                    </div>
+                    
+                    <div class="file-upload-container">
+                        <label>Upload Supporting Files (Optional)</label>
+                        <div class="file-upload">
+                            <input type="file" id="ideaFiles" multiple>
+                            <label for="ideaFiles" class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                Choose Files
+                            </label>
+                        </div>
+                        <div class="file-preview" id="filePreview"></div>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <button type="submit" class="submit-btn gradient-bg">
+                            <span>Submit Idea</span>
+                            <div class="btn-loader">
+                                <div class="loader-dot"></div>
+                                <div class="loader-dot"></div>
+                                <div class="loader-dot"></div>
+                            </div>
+                        </button>
+                        <p class="form-disclaimer">
+                            By submitting, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ideas Gallery Section -->
+    <section class="ideas-gallery">
+        <div class="container">
+            <h2 class="section-title">Explore Innovative Ideas</h2>
+            <p class="section-subtitle">
+                Discover amazing startup ideas from young entrepreneurs around the world. Get inspired and support their journey!
+            </p>
+            
+            <div class="gallery-controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search ideas..." id="searchInput">
+                    <button class="search-clear" id="searchClear">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="technology">Technology</button>
+                        <button class="filter-btn" data-filter="environment">Environment</button>
+                        <button class="filter-btn" data-filter="education">Education</button>
+                        <button class="filter-btn" data-filter="health">Health</button>
+                        <button class="filter-btn" data-filter="social">Social Good</button>
+                    </div>
+                    
+                    <div class="sort-options">
+                        <label for="sortSelect">Sort by:</label>
+                        <select id="sortSelect" class="sort-select">
+                            <option value="newest">Newest</option>
+                            <option value="popular">Most Popular</option>
+                            <option value="trending">Trending</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ideas-grid" id="ideasGrid">
+                <!-- Idea cards will be dynamically populated here -->
+            </div>
+            
+            <div class="pagination" id="pagination">
+                <button class="pagination-btn disabled">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <button class="pagination-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="ideaModal">
+        <div class="modal-container">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-content">
+                <div class="modal-image" id="modalImage">
+                    <div class="modal-category" id="modalCategory">Technology</div>
+                </div>
+                
+                <h2 class="modal-title" id="modalTitle">Smart Recycling Bin with AI Sorting</h2>
+                <p class="modal-description" id="modalDescription">
+                    A smart recycling bin that uses artificial intelligence to automatically sort waste into appropriate categories (plastic, paper, metal, glass). The bin includes a compaction system to maximize capacity and sensors to notify when it's full. Users earn rewards for proper recycling through a connected app.
+                </p>
+                
+                <div class="modal-meta">
+                    <div class="modal-author">
+                        <img src="https://randomuser.me/api/portraits/boys/12.jpg" alt="Author" class="modal-author-avatar">
+                        <div class="modal-author-info">
+                            <h4>Alex Johnson</h4>
+                            <p>Age 14, California</p>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-date">
+                        <i class="far fa-clock"></i>
+                        Posted 3 days ago
+                    </div>
+                </div>
+                
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <div class="modal-stat-number" id="modalLikes">142</div>
+                        <div class="modal-stat-label">Likes</div>
+                    </div>
+                    
+                    <div class="modal-stat">
+                        <div class="modal-stat-number" id="modalComments">23</div>
+                        <div class="modal-stat-label">Comments</div>
+                    </div>
+                    
+                    <div class="modal-stat">
+                        <div class="modal-stat-number" id="modalViews">548</div>
+                        <div class="modal-stat-label">Views</div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="modal-action-btn primary">
+                        <i class="fas fa-heart"></i>
+                        Like Idea
+                    </button>
+                    <button class="modal-action-btn secondary">
+                        <i class="fas fa-share-alt"></i>
+                        Share
+                    </button>
+                </div>
+                
+                <div class="modal-comments">
+                    <h3 class="comments-title">Comments</h3>
+                    
+                    <div class="comment-form">
+                        <input type="text" class="comment-input" placeholder="Add a comment...">
+                        <button class="comment-submit">Post</button>
+                    </div>
+                    
+                    <div class="comments-list" id="commentsList">
+                        <!-- Comments will be dynamically populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workshop Section HTML -->
+    <section class="workshops">
+        <div class="container">
+            <h2 class="section-title">Upcoming Workshops</h2>
+            <p class="section-subtitle">
+                Join our interactive workshops to develop your entrepreneurial skills, learn from experts, and connect with other young innovators.
+            </p>
+            
+            <div class="workshop-filters">
+                <button class="workshop-filter active" data-filter="all">All Workshops</button>
+                <button class="workshop-filter" data-filter="upcoming">Upcoming</button>
+                <button class="workshop-filter" data-filter="past">Past Workshops</button>
+                <button class="workshop-filter" data-filter="free">Free Events</button>
+            </div>
+            
+            <div class="workshops-grid">
+                <!-- Workshop Card 1 -->
+                <div class="workshop-card" data-category="upcoming free">
+                    <div class="workshop-image">
+                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Ideation Workshop">
+                        <div class="workshop-date">
+                            <span class="date-day">15</span>
+                            <span class="date-month">Oct</span>
+                        </div>
+                        <div class="workshop-category">Free</div>
+                    </div>
+                    <div class="workshop-content">
+                        <h3 class="workshop-title">Ideation & Brainstorming Session</h3>
+                        <p class="workshop-description">Learn techniques to generate innovative ideas and solve real-world problems creatively.</p>
+                        <div class="workshop-details">
+                            <div class="workshop-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>2 hours</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-users"></i>
+                                <span>12-16 years</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-video"></i>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                        <div class="workshop-footer">
+                            <div class="workshop-instructor">
+                                <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Instructor">
+                                <span>Sarah Johnson</span>
+                            </div>
+                            <button class="cta-button primary-glow">Register Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Workshop Card 2 -->
+                <div class="workshop-card" data-category="upcoming">
+                    <div class="workshop-image">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Business Planning">
+                        <div class="workshop-date">
+                            <span class="date-day">22</span>
+                            <span class="date-month">Oct</span>
+                        </div>
+                        <div class="workshop-category premium">Premium</div>
+                    </div>
+                    <div class="workshop-content">
+                        <h3 class="workshop-title">Business Plan Development</h3>
+                        <p class="workshop-description">Transform your idea into a solid business plan with guidance from experienced entrepreneurs.</p>
+                        <div class="workshop-details">
+                            <div class="workshop-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>4 hours</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-users"></i>
+                                <span>14-18 years</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>New York</span>
+                            </div>
+                        </div>
+                        <div class="workshop-footer">
+                            <div class="workshop-instructor">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instructor">
+                                <span>Michael Rodriguez</span>
+                            </div>
+                            <button class="cta-button primary-glow">Register Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Workshop Card 3 -->
+                <div class="workshop-card" data-category="past">
+                    <div class="workshop-image">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Pitch Workshop">
+                        <div class="workshop-date past">
+                            <span class="date-day">05</span>
+                            <span class="date-month">Sep</span>
+                        </div>
+                        <div class="workshop-category">Free</div>
+                    </div>
+                    <div class="workshop-content">
+                        <h3 class="workshop-title">Pitch Perfect: Presenting Your Idea</h3>
+                        <p class="workshop-description">Master the art of pitching your startup idea to investors, customers, and competitions.</p>
+                        <div class="workshop-details">
+                            <div class="workshop-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>3 hours</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-users"></i>
+                                <span>13-17 years</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-video"></i>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                        <div class="workshop-footer">
+                            <div class="workshop-instructor">
+                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Instructor">
+                                <span>Jennifer Lee</span>
+                            </div>
+                            <button class="cta-button secondary-glow">Watch Recording</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workshop Card 4 -->
+                <div class="workshop-card" data-category="upcoming free">
+                    <div class="workshop-image">
+                        <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Prototyping Workshop">
+                        <div class="workshop-date">
+                            <span class="date-day">29</span>
+                            <span class="date-month">Oct</span>
+                        </div>
+                        <div class="workshop-category">Free</div>
+                    </div>
+                    <div class="workshop-content">
+                        <h3 class="workshop-title">Prototyping & MVP Development</h3>
+                        <p class="workshop-description">Learn how to create prototypes and minimum viable products to test your ideas with real users before full development.</p>
+                        <div class="workshop-details">
+                            <div class="workshop-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>3 hours</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-users"></i>
+                                <span>15-18 years</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-video"></i>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                        <div class="workshop-footer">
+                            <div class="workshop-instructor">
+                                <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Instructor">
+                                <span>David Kim</span>
+                            </div>
+                            <button class="cta-button primary-glow">Register Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workshop Card 5 -->
+                <div class="workshop-card" data-category="upcoming">
+                    <div class="workshop-image">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Marketing Workshop">
+                        <div class="workshop-date">
+                            <span class="date-day">05</span>
+                            <span class="date-month">Nov</span>
+                        </div>
+                        <div class="workshop-category premium">Premium</div>
+                    </div>
+                    <div class="workshop-content">
+                        <h3 class="workshop-title">Digital Marketing for Young Entrepreneurs</h3>
+                        <p class="workshop-description">Learn social media marketing, content creation, and growth strategies to promote your startup idea effectively.</p>
+                        <div class="workshop-details">
+                            <div class="workshop-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>4 hours</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-users"></i>
+                                <span>14-18 years</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Chicago</span>
+                            </div>
+                        </div>
+                        <div class="workshop-footer">
+                            <div class="workshop-instructor">
+                                <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Instructor">
+                                <span>Maria Garcia</span>
+                            </div>
+                            <button class="cta-button primary-glow">Register Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workshop Card 6 -->
+                <div class="workshop-card" data-category="upcoming free">
+                    <div class="workshop-image">
+                        <img src="https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Sustainability Workshop">
+                        <div class="workshop-date">
+                            <span class="date-day">12</span>
+                            <span class="date-month">Nov</span>
+                        </div>
+                        <div class="workshop-category">Free</div>
+                    </div>
+                    <div class="workshop-content">
+                        <h3 class="workshop-title">Sustainable Business Practices</h3>
+                        <p class="workshop-description">Explore how to build environmentally conscious businesses that prioritize sustainability while being profitable.</p>
+                        <div class="workshop-details">
+                            <div class="workshop-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>2.5 hours</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-users"></i>
+                                <span>13-17 years</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-video"></i>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                        <div class="workshop-footer">
+                            <div class="workshop-instructor">
+                                <img src="https://randomuser.me/api/portraits/women/52.jpg" alt="Instructor">
+                                <span>Dr. Emily Chen</span>
+                            </div>
+                            <button class="cta-button primary-glow">Register Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workshop Card 7 -->
+                <div class="workshop-card" data-category="past">
+                    <div class="workshop-image">
+                        <img src="https://images.unsplash.com/photo-1542744173-05336fcc7ad4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Funding Workshop">
+                        <div class="workshop-date past">
+                            <span class="date-day">18</span>
+                            <span class="date-month">Sep</span>
+                        </div>
+                        <div class="workshop-category">Free</div>
+                    </div>
+                    <div class="workshop-content">
+                        <h3 class="workshop-title">Funding Your Startup: Bootstrapping & Grants</h3>
+                        <p class="workshop-description">Learn about different funding options for young entrepreneurs, including bootstrapping, grants, and competitions.</p>
+                        <div class="workshop-details">
+                            <div class="workshop-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>3 hours</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-users"></i>
+                                <span>16-19 years</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-video"></i>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                        <div class="workshop-footer">
+                            <div class="workshop-instructor">
+                                <img src="https://randomuser.me/api/portraits/men/62.jpg" alt="Instructor">
+                                <span>Robert Williams</span>
+                            </div>
+                            <button class="cta-button secondary-glow">Watch Recording</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workshop Card 8 -->
+                <div class="workshop-card" data-category="upcoming">
+                    <div class="workshop-image">
+                        <img src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="App Development Workshop">
+                        <div class="workshop-date">
+                            <span class="date-day">19</span>
+                            <span class="date-month">Nov</span>
+                        </div>
+                        <div class="workshop-category premium">Premium</div>
+                    </div>
+                    <div class="workshop-content">
+                        <h3 class="workshop-title">No-Code App Development</h3>
+                        <p class="workshop-description">Build functional apps without coding experience using modern no-code platforms. Perfect for testing your ideas quickly.</p>
+                        <div class="workshop-details">
+                            <div class="workshop-detail">
+                                <i class="fas fa-clock"></i>
+                                <span>6 hours</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-users"></i>
+                                <span>14-18 years</span>
+                            </div>
+                            <div class="workshop-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>San Francisco</span>
+                            </div>
+                        </div>
+                        <div class="workshop-footer">
+                            <div class="workshop-instructor">
+                                <img src="https://randomuser.me/api/portraits/women/38.jpg" alt="Instructor">
+                                <span>Jessica Taylor</span>
+                            </div>
+                            <button class="cta-button primary-glow">Register Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button class="cta-button accent-glow">
+                    <i class="fas fa-calendar-alt"></i>
+                    View All Workshops
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">
+                        <i class="fas fa-rocket"></i>
+                        <span>Kidpreneur</span>
+                    </a>
+                    <p class="footer-description">
+                        Empowering the next generation of innovators and entrepreneurs through collaboration, education, and support.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Platform</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Explore Ideas</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Submit Idea</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Resources</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Success Stories</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Support</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Help Center</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Community</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Forums</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Events</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Mentors</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Partners</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="footer-newsletter">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to our newsletter to receive updates on new ideas, events, and resources for young entrepreneurs.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        <button type="submit" class="newsletter-submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-bottom-links">
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Policy</a>
+                    <a href="#">Accessibility</a>
+                </div>
+                <p class="copyright">© 2023 Kidpreneur. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+const themeToggle = document.getElementById('themeToggle');
+const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+const body = document.body;
+
+// Check for saved theme preference or respect OS preference
+if (localStorage.getItem('theme') === 'dark' || 
+    (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
+    body.classList.add('dark-theme');
+    mobileThemeToggle.checked = true;
+}
+
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-theme');
+    localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+    mobileThemeToggle.checked = body.classList.contains('dark-theme');
+});
+
+mobileThemeToggle.addEventListener('change', () => {
+    body.classList.toggle('dark-theme');
+    localStorage.setItem('theme', body.classList.contains('dark-theme') ? 'dark' : 'light');
+});
+
+// Mobile Menu Functionality
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+
+menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+});
+
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+    });
+});
+
+// Animate Stats Counter
+function animateValue(element, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        element.innerHTML = Math.floor(progress * (end - start) + start);
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        }
+    };
+    window.requestAnimationFrame(step);
+}
+
+// Initialize stats animation when in viewport
+const statsSection = document.querySelector('.stats');
+const stat1 = document.getElementById('stat1');
+const stat2 = document.getElementById('stat2');
+const stat3 = document.getElementById('stat3');
+const stat4 = document.getElementById('stat4');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            animateValue(stat1, 0, 1250, 2000);
+            animateValue(stat2, 0, 850, 2000);
+            animateValue(stat3, 0, 120, 2000);
+            animateValue(stat4, 0, 45, 2000);
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+observer.observe(statsSection);
+
+// Character Counter for Idea Description
+const ideaDescription = document.getElementById('ideaDescription');
+const charCount = document.getElementById('charCount');
+const maxChars = 500;
+
+ideaDescription.addEventListener('input', () => {
+    const currentLength = ideaDescription.value.length;
+    charCount.textContent = currentLength;
+    
+    if (currentLength > maxChars) {
+        charCount.style.color = '#f72585';
+    } else {
+        charCount.style.color = '';
+    }
+});
+
+// File Upload Preview
+const ideaFiles = document.getElementById('ideaFiles');
+const filePreview = document.getElementById('filePreview');
+
+ideaFiles.addEventListener('change', (e) => {
+    filePreview.innerHTML = '';
+    
+    Array.from(e.target.files).forEach(file => {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'file-preview-item';
+                
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = file.name;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'file-remove';
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.addEventListener('click', () => {
+                    previewItem.remove();
+                    // Remove file from input files (would need more complex handling)
+                });
+                
+                previewItem.appendChild(img);
+                previewItem.appendChild(removeBtn);
+                filePreview.appendChild(previewItem);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // Handle non-image files differently
+            const previewItem = document.createElement('div');
+            previewItem.className = 'file-preview-item';
+            previewItem.style.background = 'var(--light-gray)';
+            previewItem.style.display = 'flex';
+            previewItem.style.alignItems = 'center';
+            previewItem.style.justifyContent = 'center';
+            previewItem.style.flexDirection = 'column';
+            previewItem.style.padding = '20px';
+            
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-file';
+            icon.style.fontSize = '3rem';
+            icon.style.marginBottom = '10px';
+            icon.style.color = 'var(--gray)';
+            
+            const fileName = document.createElement('span');
+            fileName.textContent = file.name.length > 15 ? file.name.substring(0, 12) + '...' : file.name;
+            fileName.style.fontSize = '0.9rem';
+            fileName.style.color = 'var(--gray)';
+            fileName.style.textAlign = 'center';
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'file-remove';
+            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            removeBtn.addEventListener('click', () => {
+                previewItem.remove();
+            });
+            
+            previewItem.appendChild(icon);
+            previewItem.appendChild(fileName);
+            previewItem.appendChild(removeBtn);
+            filePreview.appendChild(previewItem);
+        }
+    });
+});
+
+// Form Submission
+const ideaForm = document.querySelector('.idea-form');
+const submitBtn = ideaForm.querySelector('.submit-btn');
+
+ideaForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // Show loading state
+    submitBtn.classList.add('loading');
+    
+    // Simulate form submission
+    setTimeout(() => {
+        submitBtn.classList.remove('loading');
+        
+        // Show success message (would be replaced with actual form handling)
+        alert('Idea submitted successfully! It will be reviewed by our team.');
+        ideaForm.reset();
+        filePreview.innerHTML = '';
+        charCount.textContent = '0';
+    }, 2000);
+});
+
+// Modal Functionality
+const ideaModal = document.getElementById('ideaModal');
+const modalClose = document.getElementById('modalClose');
+const ideasGrid = document.getElementById('ideasGrid');
+
+// Sample data for idea cards - 18 items total
+const ideasData = [
+    {
+        id: 1,
+        title: "Eco-Friendly Water Bottle with Filter",
+        category: "environment",
+        description: "A reusable water bottle with built-in filtration that removes microplastics and contaminants, encouraging people to drink tap water instead of buying plastic bottles.",
+        image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Sophia Martinez",
+            avatar: "https://i.pinimg.com/736x/69/a5/60/69a5602fb6377d1fef9bb45e8db9e415.jpg",
+            age: 13,
+            location: "Texas"
+        },
+        date: "2 days ago",
+        likes: 89,
+        comments: 14,
+        views: 321
+    },
+    {
+        id: 2,
+        title: "Homework Helper AI Chatbot",
+        category: "education",
+        description: "An AI-powered chatbot that helps students with homework by explaining concepts, providing examples, and checking answers without giving away solutions.",
+        image: "https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Ryan Chen",
+            avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh4ogU_UKaPfK6DG6iUQS7noWW42dLuK_bzQ&s",
+            age: 15,
+            location: "New York"
+        },
+        date: "5 days ago",
+        likes: 142,
+        comments: 27,
+        views: 548
+    },
+    {
+        id: 3,
+        title: "Smart Plant Monitoring System",
+        category: "technology",
+        description: "A sensor-based system that monitors plant health, soil moisture, and sunlight, sending alerts to your phone when your plants need water or nutrients.",
+        image: "https://images.unsplash.com/photo-1591955506264-3f5a6834570a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Liam Johnson",
+            avatar: "https://i.pinimg.com/736x/ae/1b/3e/ae1b3e5217b45c8f3ec526b8f95b290c.jpg",
+            age: 14,
+            location: "California"
+        },
+        date: "1 week ago",
+        likes: 76,
+        comments: 18,
+        views: 289
+    },
+    {
+        id: 4,
+        title: "Community Food Sharing App",
+        category: "social",
+        description: "An app that connects people with excess homegrown produce or baked goods with neighbors who would enjoy them, reducing food waste and building community.",
+        image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Emma Wilson",
+            avatar: "https://images.squarespace-cdn.com/content/v1/5b398fb2f793925040070b55/1595977864032-8NYGWBBMUNOTT3HZAUW7/Preteen+Snarky+Behavior",
+            age: 16,
+            location: "Oregon"
+        },
+        date: "3 days ago",
+        likes: 103,
+        comments: 22,
+        views: 412
+    },
+    {
+        id: 5,
+        title: "AR History Learning Experience",
+        category: "education",
+        description: "An augmented reality app that brings historical events to life, allowing students to witness historical moments through their phone cameras.",
+        image: "https://images.unsplash.com/photo-1683009427051-00a2fe827a2c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        author: {
+            name: "Noah Brown",
+            avatar: "https://images.squarespace-cdn.com/content/v1/5b398fb2f793925040070b55/1588988069542-NUJBGRBKMR8KWSJTMVBS/Common+Preteen+Behaviors",
+            age: 15,
+            location: "Illinois"
+        },
+        date: "4 days ago",
+        likes: 118,
+        comments: 31,
+        views: 487
+    },
+    {
+        id: 6,
+        title: "Reusable Sandwich Wraps",
+        category: "environment",
+        description: "Eco-friendly, washable sandwich wraps made from food-safe materials to reduce plastic bag usage in school lunches.",
+        image: "https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Olivia Davis",
+            avatar: "https://t3.ftcdn.net/jpg/06/35/18/10/360_F_635181017_Hb4RU7yF9nPYioTN0m7sWpz7jrqIa4hY.jpg",
+            age: 12,
+            location: "Washington"
+        },
+        date: "6 days ago",
+        likes: 64,
+        comments: 12,
+        views: 203
+    },
+
+    {
+        id: 7,
+        title: "Solar-Powered Backpack",
+        category: "technology",
+        description: "A backpack with integrated solar panels that can charge devices on the go, perfect for students and outdoor enthusiasts.",
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Ethan Taylor",
+            avatar: "https://media.istockphoto.com/id/1434850824/photo/portrait-of-boy-laughing-in-public-square.jpg?s=612x612&w=0&k=20&c=zvQJG7TWKW1jjm9qD_nKwgIWOW1_oXtQ94bZIIg9Ylc=",
+            age: 14,
+            location: "Arizona"
+        },
+        date: "1 day ago",
+        likes: 92,
+        comments: 17,
+        views: 345
+    },
+    {
+        id: 8,
+        title: "Language Learning Game App",
+        category: "education",
+        description: "A mobile game that teaches new languages through interactive stories and challenges, making learning fun and engaging.",
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Isabella Clark",
+            avatar: "https://5686032.fs1.hubspotusercontent-na1.net/hub/5686032/hubfs/tjk-2024/articles-tjk/best-games-for-early-and-pre-teen-children-fun-and-learning-through-play/best-games-for-early-and-pre-teen-children-fun-and-learning-through-play-feature.webp?width=1520&height=420&name=best-games-for-early-and-pre-teen-children-fun-and-learning-through-play-feature.webp",
+            age: 16,
+            location: "Florida"
+        },
+        date: "4 days ago",
+        likes: 127,
+        comments: 24,
+        views: 512
+    },
+    {
+        id: 9,
+        title: "Smart Waste Sorting Bin",
+        category: "environment",
+        description: "An intelligent bin that uses sensors to identify and sort recyclable materials correctly, reducing contamination in recycling streams.",
+        image: "https://bine.world/assets/images/recycling_solutions/bine.webp",
+        author: {
+            name: "Mason White",
+            avatar: "https://lh3.googleusercontent.com/-yVtfrgu2mdk/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucnKdYBveHMFd5SMN3VfQYaJx6M5uA/photo.jpg",
+            age: 15,
+            location: "Colorado"
+        },
+        date: "3 days ago",
+        likes: 156,
+        comments: 32,
+        views: 623
+    },
+    {
+        id: 10,
+        title: "Mental Health Chat Support",
+        category: "health",
+        description: "A peer-to-peer chat platform where teens can support each other through difficult times, with guidance from mental health professionals.",
+        image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Ava Rodriguez",
+            avatar: "https://i.pinimg.com/736x/e7/89/5c/e7895c39034de00da9c0baf9e55470f3.jpg",
+            age: 17,
+            location: "Michigan"
+        },
+        date: "2 days ago",
+        likes: 203,
+        comments: 45,
+        views: 845
+    },
+    {
+        id: 11,
+        title: "Urban Vertical Farming Kit",
+        category: "environment",
+        description: "Compact indoor farming systems that allow urban dwellers to grow fresh herbs and vegetables year-round with minimal space.",
+        image: "https://higronics.com/assets/front/higronics/images/res-banner/res-hydroponic-vertical-farming-banner.jpg",
+        author: {
+            name: "Lucas Lee",
+            avatar: "https://media.istockphoto.com/id/158879321/photo/portrait-of-adorable-young-happy-boy.jpg?s=612x612&w=0&k=20&c=Wov5HhtuGXFFdL70VN_RFRX-IUDkN3MRQtmzg9MhmnY=",
+            age: 13,
+            location: "New York"
+        },
+        date: "5 days ago",
+        likes: 118,
+        comments: 28,
+        views: 487
+    },
+    {
+        id: 12,
+        title: "Accessible Playground Design",
+        category: "social",
+        description: "Inclusive playground equipment designed for children of all abilities to play together, promoting understanding and friendship.",
+        image: "https://nofault.com/wp-content/uploads/2023/05/NF_MREC_2021_MN_Woodhaven-Park_0489_900x600.jpg",
+        author: {
+            name: "Charlotte Brown",
+            avatar: "https://s.abcnews.com/images/GMA/girl-day-abc-jpo-181010_hpMain_1x1_992.jpg?w=384",
+            age: 14,
+            location: "Ohio"
+        },
+        date: "1 week ago",
+        likes: 176,
+        comments: 37,
+        views: 692
+    },
+    {
+        id: 13,
+        title: "AI-Powered Study Planner",
+        category: "education",
+        description: "An intelligent app that creates personalized study schedules based on learning patterns, exam dates, and subject difficulty.",
+        image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "William Nguyen",
+            avatar: "https://thumbs.dreamstime.com/b/portrait-asian-chinese-teenage-boy-19501673.jpg",
+            age: 16,
+            location: "California"
+        },
+        date: "3 days ago",
+        likes: 134,
+        comments: 29,
+        views: 543
+    },
+    {
+        id: 14,
+        title: "Eco-Friendly School Supplies",
+        category: "environment",
+        description: "A line of school supplies made from recycled and biodegradable materials, reducing plastic waste in education.",
+        image: "https://images.unsplash.com/photo-1545263595-8519601eec49?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2hpbmElMjBnaXJsfGVufDB8fDB8fHww",
+        author: {
+            name: "Mia Anderson",
+            avatar: "https://i.pinimg.com/736x/09/ee/97/09ee9790e4a873be73302693a56a9bf6.jpg",
+            age: 12,
+            location: "Washington"
+        },
+        date: "4 days ago",
+        likes: 97,
+        comments: 21,
+        views: 387
+    },
+    {
+        id: 15,
+        title: "Teen Financial Literacy App",
+        category: "education",
+        description: "A gamified app that teaches financial literacy, budgeting, and investing concepts tailored for teenagers.",
+        image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "James Wilson",
+            avatar: "https://thumbs.dreamstime.com/b/happy-black-teen-boy-outside-african-american-smiles-sitting-bench-192130399.jpg",
+            age: 15,
+            location: "Texas"
+        },
+        date: "2 days ago",
+        likes: 145,
+        comments: 33,
+        views: 578
+    },
+    {
+        id: 16,
+        title: "Community Clean-Up Initiative",
+        category: "social",
+        description: "A platform that organizes local clean-up events and tracks the environmental impact of community efforts.",
+        image: "https://i.natgeofe.com/k/3519980b-ba58-456d-b691-2ed516c223e0/clean-it-up-textimage_3x2.jpg",
+        author: {
+            name: "Harper Martinez",
+            avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk0HJovNdnsrqUdNxbEL9BjReHpjJlW8nwEQ&s",
+            age: 14,
+            location: "Oregon"
+        },
+        date: "6 days ago",
+        likes: 112,
+        comments: 26,
+        views: 432
+    },
+    {
+        id: 17,
+        title: "Smart Bike Lock with GPS",
+        category: "technology",
+        description: "A bike lock with integrated GPS tracking and alarm system that sends alerts to your phone if tampered with.",
+        image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Benjamin Thompson",
+            avatar: "https://plus.unsplash.com/premium_photo-1682089892133-556bde898f2c?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW5kaWFuJTIwYm95fGVufDB8fDB8fHww",
+            age: 16,
+            location: "Illinois"
+        },
+        date: "1 day ago",
+        likes: 88,
+        comments: 19,
+        views: 321
+    },
+    {
+        id: 18,
+        title: "Healthy Snack Vending Machines",
+        category: "health",
+        description: "Vending machines stocked with nutritious snacks and drinks for schools, promoting healthy eating habits.",
+        image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        author: {
+            name: "Amelia Harris",
+            avatar: "https://images.pexels.com/photos/19948469/pexels-photo-19948469.jpeg?cs=srgb&dl=pexels-deeworkroom-19948469.jpg&fm=jpg",
+            age: 13,
+            location: "Georgia"
+        },
+        date: "3 days ago",
+        likes: 121,
+        comments: 24,
+        views: 467
+    }
+];
+
+// Pagination functionality
+const pagination = document.getElementById('pagination');
+const paginationBtns = pagination.querySelectorAll('.pagination-btn');
+let currentPage = 1;
+const itemsPerPage = 6; // 6 items per page, 18 total items = 3 pages
+
+// Update pagination buttons
+function updatePagination() {
+    paginationBtns.forEach((btn, index) => {
+        // Skip the previous/next buttons
+        if (index === 0 || index === paginationBtns.length - 1) return;
+        
+        const pageNum = parseInt(btn.textContent);
+        btn.classList.toggle('active', pageNum === currentPage);
+    });
+    
+    // Update previous/next button states
+    paginationBtns[0].classList.toggle('disabled', currentPage === 1);
+    paginationBtns[paginationBtns.length - 1].classList.toggle(
+        'disabled', 
+        currentPage === Math.ceil(ideasData.length / itemsPerPage)
+    );
+}
+
+// Show the correct page of ideas
+function showPage(page) {
+    currentPage = page;
+    
+    // Calculate start and end index for current page
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    
+    // Get ideas for current page
+    const pageIdeas = ideasData.slice(startIndex, endIndex);
+    
+    // Generate and display these ideas
+    generateIdeaCards(pageIdeas);
+    
+    // Update pagination buttons
+    updatePagination();
+}
+
+// Add event listeners to pagination buttons
+paginationBtns.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+        // Skip if disabled
+        if (btn.classList.contains('disabled')) return;
+        
+        if (index === 0) {
+            // Previous button
+            showPage(currentPage - 1);
+        } else if (index === paginationBtns.length - 1) {
+            // Next button
+            showPage(currentPage + 1);
+        } else {
+            // Numbered button
+            const pageNum = parseInt(btn.textContent);
+            showPage(pageNum);
+        }
+    });
+});
+
+// Generate idea cards
+function generateIdeaCards(ideas) {
+    ideasGrid.innerHTML = '';
+    
+    ideas.forEach(idea => {
+        const card = document.createElement('div');
+        card.className = 'idea-card';
+        card.dataset.category = idea.category;
+        
+        card.innerHTML = `
+            <div class="card-image" style="background-image: url('${idea.image}')">
+                <div class="card-category">${idea.category}</div>
+                <button class="card-expand" data-id="${idea.id}">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div class="card-content">
+                <h3 class="card-title">${idea.title}</h3>
+                <p class="card-description">${idea.description}</p>
+                <div class="card-meta">
+                    <div class="card-author">
+                        <img src="${idea.author.avatar}" alt="${idea.author.name}" class="author-avatar">
+                        <div class="author-name">${idea.author.name}</div>
+                    </div>
+                    <div class="card-date">${idea.date}</div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-heart"></i>
+                        <span>${idea.likes}</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-comment"></i>
+                        <span>${idea.comments}</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-eye"></i>
+                        <span>${idea.views}</span>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-action-btn">
+                        <i class="fas fa-heart"></i>
+                    </button>
+                    <button class="card-action-btn">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                    <button class="card-action-btn">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        ideasGrid.appendChild(card);
+    });
+    
+    // Add event listeners to expand buttons
+    document.querySelectorAll('.card-expand').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const ideaId = parseInt(btn.dataset.id);
+            openModal(ideaId);
+        });
+    });
+    
+    // Add event listeners to like buttons
+    document.querySelectorAll('.card-action-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (this.querySelector('.fa-heart')) {
+                this.classList.toggle('liked');
+            }
+        });
+    });
+}
+
+// Open modal with idea details
+function openModal(ideaId) {
+    const idea = ideasData.find(item => item.id === ideaId);
+    
+    if (idea) {
+        document.getElementById('modalImage').style.backgroundImage = `url('${idea.image}')`;
+        document.getElementById('modalCategory').textContent = idea.category;
+        document.getElementById('modalTitle').textContent = idea.title;
+        document.getElementById('modalDescription').textContent = idea.description;
+        document.getElementById('modalLikes').textContent = idea.likes;
+        document.getElementById('modalComments').textContent = idea.comments;
+        document.getElementById('modalViews').textContent = idea.views;
+        
+        // Generate sample comments
+        const commentsList = document.getElementById('commentsList');
+        commentsList.innerHTML = `
+            <div class="comment-item">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Commenter" class="comment-avatar">
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <div class="comment-author">Mr. Thompson</div>
+                        <div class="comment-date">2 days ago</div>
+                    </div>
+                    <p class="comment-text">This is a fantastic idea! Have you considered how you would manufacture the filtration system?</p>
+                    <div class="comment-actions">
+                        <div class="comment-action">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>12</span>
+                        </div>
+                        <div class="comment-action">
+                            <i class="fas fa-reply"></i>
+                            <span>Reply</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-item">
+                <img src="https://randomuser.me/api/portraits/women/42.jpg" alt="Commenter" class="comment-avatar">
+                <div class="comment-content">
+                    <div class="comment-header">
+                        <div class="comment-author">Dr. Rodriguez</div>
+                        <div class="comment-date">1 day ago</div>
+                    </div>
+                    <p class="comment-text">I'm a materials scientist and would be happy to advise on this project. The environmental impact could be significant!</p>
+                    <div class="comment-actions">
+                        <div class="comment-action">
+                            <i class="fas fa-thumbs-up"></i>
+                            <span>8</span>
+                        </div>
+                        <div class="comment-action">
+                            <i class="fas fa-reply"></i>
+                            <span>Reply</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        ideaModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Close modal
+modalClose.addEventListener('click', () => {
+    ideaModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+});
+
+// Close modal when clicking outside
+ideaModal.addEventListener('click', (e) => {
+    if (e.target === ideaModal) {
+        ideaModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+});
+
+// Initialize idea cards and pagination
+showPage(currentPage);
+
+// Filter functionality
+const filterBtns = document.querySelectorAll('.filter-btn');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class from all buttons
+        filterBtns.forEach(b => b.classList.remove('active'));
+        
+        // Add active class to clicked button
+        btn.classList.add('active');
+        
+        const filter = btn.dataset.filter;
+        
+        // Reset to first page when filtering
+        currentPage = 1;
+        
+        if (filter === 'all') {
+            // Show all cards
+            showPage(currentPage);
+        } else {
+            // Filter ideas by category
+            const filteredIdeas = ideasData.filter(idea => idea.category === filter);
+            
+            // Calculate total pages for filtered results
+            const totalFilteredPages = Math.ceil(filteredIdeas.length / itemsPerPage);
+            
+            // Update pagination buttons based on filtered results
+            paginationBtns.forEach((pBtn, index) => {
+                // Skip previous/next buttons
+                if (index === 0 || index === paginationBtns.length - 1) return;
+                
+                // Hide buttons that exceed total pages
+                if (index > totalFilteredPages) {
+                    pBtn.style.display = 'none';
+                } else {
+                    pBtn.style.display = 'flex';
+                    pBtn.textContent = index;
+                }
+            });
+            
+            // Show first page of filtered results
+            const pageIdeas = filteredIdeas.slice(0, itemsPerPage);
+            generateIdeaCards(pageIdeas);
+            updatePagination();
+        }
+    });
+});
+
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+
+searchInput.addEventListener('input', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    
+    if (searchTerm) {
+        searchClear.style.display = 'flex';
+    } else {
+        searchClear.style.display = 'none';
+        // Reset to showing all ideas if search is cleared
+        showPage(currentPage);
+        return;
+    }
+    
+    // Filter ideas by search term
+    const filteredIdeas = ideasData.filter(idea => {
+        const title = idea.title.toLowerCase();
+        const description = idea.description.toLowerCase();
+        return title.includes(searchTerm) || description.includes(searchTerm);
+    });
+    
+    // Reset to first page when searching
+    currentPage = 1;
+    
+    // Calculate total pages for search results
+    const totalFilteredPages = Math.ceil(filteredIdeas.length / itemsPerPage);
+    
+    // Update pagination buttons based on search results
+    paginationBtns.forEach((pBtn, index) => {
+        // Skip previous/next buttons
+        if (index === 0 || index === paginationBtns.length - 1) return;
+        
+        // Hide buttons that exceed total pages
+        if (index > totalFilteredPages) {
+            pBtn.style.display = 'none';
+        } else {
+            pBtn.style.display = 'flex';
+            pBtn.textContent = index;
+        }
+    });
+    
+    // Show first page of search results
+    const pageIdeas = filteredIdeas.slice(0, itemsPerPage);
+    generateIdeaCards(pageIdeas);
+    updatePagination();
+});
+
+searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    searchClear.style.display = 'none';
+    
+    // Show all cards
+    showPage(currentPage);
+    
+    // Reset active filter
+    filterBtns.forEach(btn => {
+        if (btn.dataset.filter === 'all') {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+});
+
+// Sort functionality
+const sortSelect = document.getElementById('sortSelect');
+
+sortSelect.addEventListener('change', () => {
+    const sortValue = sortSelect.value;
+    let sortedIdeas = [...ideasData];
+    
+    switch(sortValue) {
+        case 'newest':
+            // Already sorted by newest (based on our sample data order)
+            break;
+        case 'popular':
+            sortedIdeas.sort((a, b) => b.likes - a.likes);
+            break;
+        case 'trending':
+            sortedIdeas.sort((a, b) => (b.likes + b.comments) - (a.likes + a.comments));
+            break;
+    }
+    
+    // Update the ideasData with sorted array
+    ideasData.length = 0;
+    ideasData.push(...sortedIdeas);
+    
+    // Refresh the display
+    showPage(currentPage);
+});
+
+// Improved hero title animation
+function animateHeroTitle() {
+    const titleWords = document.querySelectorAll('.title-word');
+    
+    // First reset any existing animations
+    titleWords.forEach(word => {
+        word.style.animation = 'none';
+    });
+    
+    // Force a reflow before applying new animations
+    void document.body.offsetHeight;
+    
+    // Apply animations with delays
+    titleWords.forEach((word, index) => {
+        word.style.animation = `fadeInUp 0.8s ${index * 0.2 + 0.5}s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275)`;
+    });
+}
+
+// Scroll indicator animation
+const scrollIndicator = document.querySelector('.scroll-indicator');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+        scrollIndicator.classList.add('pulse');
+    } else {
+        scrollIndicator.classList.remove('pulse');
+    }
+});
+
+// Workshop Filter Functionality
+const workshopFilters = document.querySelectorAll('.workshop-filter');
+const workshopCards = document.querySelectorAll('.workshop-card');
+
+workshopFilters.forEach(filter => {
+    filter.addEventListener('click', () => {
+        // Remove active class from all filters
+        workshopFilters.forEach(f => f.classList.remove('active'));
+        
+        // Add active class to clicked filter
+        filter.classList.add('active');
+        
+        const filterValue = filter.dataset.filter;
+        
+        if (filterValue === 'all') {
+            // Show all workshop cards
+            workshopCards.forEach(card => {
+                card.style.display = 'block';
+            });
+        } else {
+            // Hide cards that don't match the filter
+            workshopCards.forEach(card => {
+                if (card.dataset.category.includes(filterValue)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    });
+});
+
+// Initialize when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    animateHeroTitle();
+    
+    // Add event listeners to workshop registration buttons
+    document.querySelectorAll('.workshop-card .cta-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const workshopTitle = this.closest('.workshop-card').querySelector('.workshop-title').textContent;
+            alert(`Thank you for your interest in "${workshopTitle}"! Registration details would be shown here.`);
+        });
+    });
+});
+
+// Also initialize when the page is fully loaded (as a fallback)
+window.addEventListener('load', animateHeroTitle);
+    </script>
+</body>
+</html>
