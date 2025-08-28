@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Kidpreneur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Modern Color Scheme */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --secondary-dark: #5f079c;
+            --accent: #f72585;
+            --accent-dark: #d91a72;
+            --success: #4cc9f0;
+            --warning: #f9c74f;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #e9ecef;
+            --dark-border: #2d2d2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --shadow-dark: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --shadow-dark-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-accent: linear-gradient(135deg, var(--accent), #b5179e);
+            --gradient-success: linear-gradient(135deg, var(--success), #4895ef);
+            --gradient-warning: linear-gradient(135deg, var(--warning), #f9844a);
+            --gradient-info: linear-gradient(135deg, var(--info), #4cc9f0);
+            --gradient-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            --gradient-dark-bg: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background: var(--gradient-bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+            margin: 0;
+            padding: 0;
+        }
+
+        body.dark-theme {
+            color: var(--dark-text);
+            background: var(--gradient-dark-bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 5px;
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dark-theme .section-subtitle {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        /* Particle Background */
+        .particle-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.7;
+        }
+
+        .particle-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .layer-1 {
+            background: radial-gradient(circle at 20% 20%, rgba(67, 97, 238, 0.15) 0%, transparent 50%);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .layer-2 {
+            background: radial-gradient(circle at 80% 60%, rgba(114, 9, 183, 0.1) 0%, transparent 50%);
+            animation: float 25s infinite ease-in-out reverse;
+        }
+
+        .layer-3 {
+            background: radial-gradient(circle at 40% 80%, rgba(247, 37, 133, 0.08) 0%, transparent 50%);
+            animation: float 30s infinite ease-in-out;
+        }
+
+        /* Floating Navigation */
+        .floating-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 15px 30px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme .floating-nav {
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: var(--shadow-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            padding: 8px 0;
+        }
+
+        .dark-theme .nav-link {
+            color: var(--dark-text);
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+            border-radius: 3px;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-gray);
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .dark-theme .theme-toggle {
+            background: var(--dark-card);
+            color: var(--dark-text);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px) rotate(15deg);
+            box-shadow: var(--shadow);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            padding: 150px 20px 80px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(247, 37, 133, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-title {
+            font-size: 3.8rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: var(--gray);
+            line-height: 1.7;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dark-theme .hero-description {
+            color: rgba(233, 236, 239, 0.8);
+        }
+
+        /* Mission Section */
+        .mission {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .mission-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .mission-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .mission-text {
+            padding: 0 20px;
+        }
+
+        .mission-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .mission-stat {
+            text-align: center;
+            padding: 25px;
+            border-radius: 16px;
+            background: white;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .dark-theme .mission-stat {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .mission-stat:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .mission-stat:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .mission-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .mission-stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .dark-theme .mission-stat-label {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .mission-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 400px;
+        }
+
+        .dark-theme .mission-image {
+            box-shadow: var(--shadow-dark);
+        }
+
+        .mission-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Values Section */
+        .values {
+            padding: 100px 0;
+            background: rgba(248, 249, 250, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            margin: 40px;
+            position: relative;
+        }
+
+        .dark-theme .values {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .value-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-theme .value-card {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .value-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .value-card:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.2rem;
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .value-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .value-title {
+            color: var(--dark-text);
+        }
+
+        .value-description {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .dark-theme .value-description {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        /* Team Section */
+        .team {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .dark-theme .team-member {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .team-member:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .team-image {
+            height: 280px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .team-member:hover .team-image img {
+            transform: scale(1.1);
+        }
+
+        .team-social {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.8rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .team-member:hover .team-social {
+            opacity: 1;
+        }
+
+        .team-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .team-social a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .team-info {
+            padding: 25px;
+        }
+
+        .team-name {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .team-name {
+            color: var(--dark-text);
+        }
+
+        .team-role {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .team-bio {
+            color: var(--gray);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .dark-theme .team-bio {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        /* Story Section */
+        .story {
+            padding: 100px 0;
+            background: rgba(248, 249, 250, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            margin: 40px;
+            position: relative;
+        }
+
+        .dark-theme .story {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (min-width: 992px) {
+            .story-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .story-text {
+            padding: 0 20px;
+        }
+
+        .story-timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .story-timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 4px solid white;
+        }
+
+        .dark-theme .timeline-item::before {
+            border-color: var(--dark-card);
+        }
+
+        .timeline-year {
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .timeline-content {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .dark-theme .timeline-content {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .story-image {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 400px;
+        }
+
+        .dark-theme .story-image {
+            box-shadow: var(--shadow-dark);
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* NEW: Impact Section */
+        .impact {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .impact-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-theme .impact-card {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .impact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .impact-card:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .impact-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.2rem;
+            background: var(--gradient-success);
+            color: white;
+            box-shadow: 0 10px 20px rgba(76, 201, 240, 0.3);
+        }
+
+        .impact-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .impact-title {
+            color: var(--dark-text);
+        }
+
+        .impact-description {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .dark-theme .impact-description {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        /* NEW: Testimonials Section */
+        .testimonials {
+            padding: 100px 0;
+            background: rgba(248, 249, 250, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            margin: 40px;
+            position: relative;
+        }
+
+        .dark-theme .testimonials {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .dark-theme .testimonial-card {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .testimonial-card:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+            line-height: 1.7;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .testimonial-text::before {
+            content: """;
+            position: absolute;
+            left: 0;
+            top: -15px;
+            font-size: 3rem;
+            color: var(--primary);
+            font-family: Arial, sans-serif;
+        }
+
+        .dark-theme .testimonial-text {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-info p {
+            margin: 0;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* NEW: Programs Section */
+        .programs {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .program-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .dark-theme .program-card {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .program-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .dark-theme .program-card:hover {
+            box-shadow: var(--shadow-dark-hover);
+        }
+
+        .program-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .program-card:hover .program-image img {
+            transform: scale(1.1);
+        }
+
+        .program-content {
+            padding: 25px;
+        }
+
+        .program-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .program-title {
+            color: var(--dark-text);
+        }
+
+        .program-duration {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .program-description {
+            color: var(--gray);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dark-theme .program-description {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .program-features {
+            margin-bottom: 1.5rem;
+        }
+
+        .program-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .dark-theme .program-feature {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .program-feature i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .program-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .program-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        /* NEW: Partners Section */
+        .partners {
+            padding: 80px 0;
+            background: rgba(248, 249, 250, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            margin: 40px;
+            position: relative;
+        }
+
+        .dark-theme .partners {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            align-items: center;
+        }
+
+        .partner-logo {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .dark-theme .partner-logo {
+            background: var(--dark-card);
+        }
+
+        .partner-logo:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .dark-theme .partner-logo:hover {
+            box-shadow: var(--shadow-dark);
+        }
+
+        .partner-logo img {
+            max-width: 100%;
+            max-height: 60px;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .partner-logo:hover img {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+        }
+
+        .cta-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: var(--transition);
+        }
+
+        .cta-button:hover:before {
+            left: 100%;
+        }
+
+        .primary-glow {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+        }
+
+        .primary-glow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(67, 97, 238, 0.4);
+        }
+
+        .secondary-glow {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+
+        .secondary-glow:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(67, 97, 238, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gradient-dark-bg);
+            color: var(--dark-text);
+            padding: 80px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .footer::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(247, 37, 133, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .footer-logo i {
+            margin-right: 10px;
+            font-size: 2.2rem;
+        }
+
+        .footer-description {
+            max-width: 400px;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            color: rgba(233, 236, 239, 0.8);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--dark-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column a {
+            color: rgba(233, 236, 239, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-column a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .footer-column a i {
+            font-size: 0.9rem;
+        }
+
+        .footer-newsletter h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-newsletter h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+
+        .footer-newsletter p {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            color: rgba(233, 236, 239, 0.8);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .newsletter-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .newsletter-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .footer-bottom {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(233, 236, 239, 0.6);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(10px, 10px);
+            }
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .section-title {
+                font-size: 2.4rem;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-description {
+                font-size: 1.1rem;
+            }
+
+            .floating-nav {
+                padding: 12px 20px;
+            }
+
+            .nav-links {
+                gap: 1.2rem;
+            }
+
+            .values, .story, .testimonials, .partners {
+                margin: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero {
+                padding: 130px 20px 60px;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .mission-stat-number {
+                font-size: 2rem;
+            }
+
+            .values, .story, .testimonials, .partners {
+                margin: 10px;
+                padding: 60px 0;
+            }
+
+            .value-card, .impact-card {
+                padding: 30px 20px;
+            }
+
+            .footer {
+                padding: 60px 0 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particle-background">
+        <div class="particle-layer layer-1"></div>
+        <div class="particle-layer layer-2"></div>
+        <div class="particle-layer layer-3"></div>
+    </div>
+
+    <!-- Floating Navigation -->
+    <nav class="floating-nav">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>Kidpreneur</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Programs</a>
+                <a href="#" class="nav-link">Success Stories</a>
+                <a href="#" class="nav-link">Resources</a>
+                <a href="#" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title fade-in">Empowering the Next Generation of Innovators</h1>
+            <p class="hero-description fade-in">Kidpreneur is a global movement dedicated to nurturing entrepreneurial skills in children aged 8-16. Through our innovative programs, mentorship, and resources, we're creating a world where young minds can thrive as creative problem-solvers and future leaders.</p>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission" id="mission">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Mission & Vision</h2>
+            <p class="section-subtitle fade-in">We believe that every child has the potential to change the world. Our mission is to unlock that potential through entrepreneurship education.</p>
+            
+            <div class="mission-content">
+                <div class="mission-text fade-in">
+                    <h3>Creating Future Leaders Through Entrepreneurship</h3>
+                    <p>At Kidpreneur, we're not just teaching business skills—we're fostering creativity, resilience, and ethical leadership. Our approach combines practical learning with mentorship to help young minds develop the mindset and skills needed to thrive in an ever-changing world.</p>
+                    <p>We envision a future where young people are empowered to create solutions to real-world problems, where they approach challenges with confidence and creativity, and where they understand the power of innovation and collaboration.</p>
+                    
+                    <div class="mission-stats">
+                        <div class="mission-stat fade-in">
+                            <div class="mission-stat-number">15,000+</div>
+                            <div class="mission-stat-label">Young Entrepreneurs</div>
+                        </div>
+                        <div class="mission-stat fade-in">
+                            <div class="mission-stat-number">42</div>
+                            <div class="mission-stat-label">Countries</div>
+                        </div>
+                        <div class="mission-stat fade-in">
+                            <div class="mission-stat-number">89%</div>
+                            <div class="mission-stat-label">Success Rate</div>
+                        </div>
+                        <div class="mission-stat fade-in">
+                            <div class="mission-stat-number">200+</div>
+                            <div class="mission-stat-label">Mentors</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mission-image fade-in">
+                    <img src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kids participating in entrepreneurship workshop">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values" id="values">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Core Values</h2>
+            <p class="section-subtitle fade-in">These principles guide everything we do at Kidpreneur and shape the experiences we create for young innovators.</p>
+            
+            <div class="values-grid">
+                <div class="value-card fade-in">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="value-title">Innovation</h3>
+                    <p class="value-description">We encourage creative thinking and curiosity, empowering kids to develop unique solutions to real-world problems through design thinking and experimentation.</p>
+                </div>
+                
+                <div class="value-card fade-in">
+                    <div class="value-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="value-title">Empathy</h3>
+                    <p class="value-description">We teach young entrepreneurs to understand and address real needs in their communities, fostering businesses that make a positive social impact.</p>
+                </div>
+                
+                <div class="value-card fade-in">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="value-title">Integrity</h3>
+                    <p class="value-description">We emphasize ethical business practices, transparency, and social responsibility as foundations for sustainable entrepreneurship.</p>
+                </div>
+                
+                <div class="value-card fade-in">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Collaboration</h3>
+                    <p class="value-description">We believe in the power of teamwork and diverse perspectives, creating environments where young minds can learn from each other.</p>
+                </div>
+                
+                <div class="value-card fade-in">
+                    <div class="value-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="value-title">Action-Oriented</h3>
+                    <p class="value-description">We focus on learning by doing, encouraging kids to test their ideas, iterate based on feedback, and persist through challenges.</p>
+                </div>
+                
+                <div class="value-card fade-in">
+                    <div class="value-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="value-title">Global Mindset</h3>
+                    <p class="value-description">We prepare young entrepreneurs to think beyond borders and understand how their ideas can create positive change worldwide.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team" id="team">
+        <div class="container">
+            <h2 class="section-title fade-in">Meet Our Leadership Team</h2>
+            <p class="section-subtitle fade-in">Our diverse team of educators, entrepreneurs, and innovators is committed to empowering the next generation.</p>
+            
+            <div class="team-grid">
+                <div class="team-member fade-in">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sarah Johnson - Founder">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Sarah Johnson</h3>
+                        <p class="team-role">Founder & CEO</p>
+                        <p class="team-bio">Former educator and social entrepreneur with 15+ years of experience in youth development. Sarah founded Kidpreneur after seeing the transformative power of entrepreneurship education in her classroom.</p>
+                    </div>
+                </div>
+                
+                <div class="team-member fade-in">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Michael Chen - Education Director">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Michael Chen</h3>
+                        <p class="team-role">Education Director</p>
+                        <p class="team-bio">Curriculum design expert with a PhD in Educational Psychology. Michael develops our project-based learning frameworks that make complex business concepts accessible to young minds.</p>
+                    </div>
+                </div>
+                
+                <div class="team-member fade-in">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Priya Sharma - Global Programs">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">Priya Sharma</h3>
+                        <p class="team-role">Global Programs Director</p>
+                        <p class="team-bio">International development specialist who has implemented youth entrepreneurship programs across 20+ countries. Priya ensures our initiatives are culturally relevant and impactful worldwide.</p>
+                    </div>
+                </div>
+                
+                <div class="team-member fade-in">
+                    <div class="team-image">
+                        <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="David Martinez - Technology">
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-info">
+                        <h3 class="team-name">David Martinez</h3>
+                        <p class="team-role">Technology Director</p>
+                        <p class="team-bio">Tech entrepreneur and coding advocate who leads our digital learning initiatives. David ensures our platform remains cutting-edge and accessible to children from all backgrounds.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story" id="story">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Journey</h2>
+            <p class="section-subtitle fade-in">From a classroom project to a global movement—discover how Kidpreneur has evolved over the years.</p>
+            
+            <div class="story-content">
+                <div class="story-text fade-in">
+                    <h3>How It All Began</h3>
+                    <p>Kidpreneur started in 2015 as a simple after-school program in a single classroom. Our founder, Sarah Johnson, noticed that traditional education wasn't adequately preparing students for the real-world challenges they would face as adults.</p>
+                    <p>What began with just 12 students meeting twice a week has now grown into an international organization with programs in 42 countries. Along the way, we've learned, adapted, and expanded our vision while staying true to our core mission.</p>
+                    
+                    <div class="story-timeline">
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-year">2015</div>
+                            <div class="timeline-content">Founded as an after-school program with 12 students in Portland, Oregon. Developed our first curriculum focused on lemonade stand economics.</div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-year">2017</div>
+                            <div class="timeline-content">Expanded to 10 schools across Oregon. Launched our first summer entrepreneurship camp. Received recognition from the Department of Education.</div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-year">2019</div>
+                            <div class="timeline-content">Went international with programs in Canada and Mexico. Developed our digital learning platform. Reached 1,000 young entrepreneurs.</div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-year">2021</div>
+                            <div class="timeline-content">Pivoted to virtual programs during the pandemic, reaching 5,000+ students globally. Launched our mentorship matching platform.</div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in">
+                            <div class="timeline-year">2023</div>
+                            <div class="timeline-content">Reached 15,000+ young entrepreneurs across 42 countries. Launched our social impact fund for kid-led ventures. Recognized by UNESCO for educational innovation.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="story-image fade-in">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Kidpreneur early days classroom photo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Impact Section -->
+    <section class="impact" id="impact">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Impact</h2>
+            <p class="section-subtitle fade-in">We measure success not just by businesses launched, but by lives transformed and communities strengthened.</p>
+            
+            <div class="impact-grid">
+                <div class="impact-card fade-in">
+                    <div class="impact-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="impact-title">Economic Impact</h3>
+                    <p class="impact-description">Our young entrepreneurs have launched over 3,500 micro-businesses, generating more than $2.3 million in revenue, with 30% of profits donated to community causes.</p>
+                </div>
+                
+                <div class="impact-card fade-in">
+                    <div class="impact-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="impact-title">Educational Outcomes</h3>
+                    <p class="impact-description">92% of participants show improved problem-solving skills, 87% demonstrate increased confidence, and 78% show greater engagement in traditional academic subjects.</p>
+                </div>
+                
+                <div class="impact-card fade-in">
+                    <div class="impact-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="impact-title">Community Engagement</h3>
+                    <p class="impact-description">Kidpreneur initiatives have addressed over 200 community challenges, from environmental issues to social justice, with solutions conceived and implemented by youth.</p>
+                </div>
+                
+                <div class="impact-card fade-in">
+                    <div class="impact-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3 class="impact-title">Global Reach</h3>
+                    <p class="impact-description">Our programs now operate in 42 countries, with materials translated into 15 languages, ensuring accessibility to diverse communities worldwide.</p>
+                </div>
+                
+                <div class="impact-card fade-in">
+                    <div class="impact-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="impact-title">Sustainable Ventures</h3>
+                    <p class="impact-description">Over 60% of businesses started by our young entrepreneurs continue operating beyond the program, with 45% of founders starting additional ventures.</p>
+                </div>
+                
+                <div class="impact-card fade-in">
+                    <div class="impact-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="impact-title">Recognition</h3>
+                    <p class="impact-description">Kidpreneur has received 18 awards for educational innovation and social impact, including recognition from the United Nations and World Economic Forum.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title fade-in">Success Stories</h2>
+            <p class="section-subtitle fade-in">Hear from young entrepreneurs, parents, and educators about their experiences with Kidpreneur.</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">Kidpreneur changed my daughter's life. She went from being shy and unsure to confidently pitching her business idea to local investors. The skills she gained extend far beyond entrepreneurship.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Lisa Rodriguez">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>Lisa Rodriguez</h4>
+                            <p>Parent of Kidpreneur alum</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">The Kidpreneur program taught me that age is just a number when it comes to making a difference. I started a business that upcycles plastic waste into fashionable accessories and have already prevented over 2,000 bottles from entering landfills.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1506634572416-48cdfe530110?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Jamal Williams">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>Jamal Williams</h4>
+                            <p>Age 14, EcoStyle Founder</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">As an educator for 20 years, I've never seen a program that engages students like Kidpreneur. The practical application of concepts from math, language arts, and social studies makes learning relevant and exciting.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1566753323558-f4e0952af115?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Robert Kim">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>Robert Kim</h4>
+                            <p>Middle School Teacher</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card fade-in">
+                    <p class="testimonial-text">Through Kidpreneur, I connected with a mentor who helped me turn my love for baking into a successful small business. I've learned about marketing, finances, and customer service—skills I'll use forever.</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">
+                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Sophia Miller">
+                        </div>
+                        <div class="testimonial-info">
+                            <h4>Sophia Miller</h4>
+                            <p>Age 12, Sweet Treats Bakery</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Programs Section -->
+    <section class="programs" id="programs">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Programs</h2>
+            <p class="section-subtitle fade-in">We offer a variety of programs designed to meet young entrepreneurs where they are and take them where they want to go.</p>
+            
+            <div class="programs-grid">
+                <div class="program-card fade-in">
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Foundations Program">
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Foundations Program</h3>
+                        <p class="program-duration">8 weeks • Ages 8-12</p>
+                        <p class="program-description">An introduction to entrepreneurship that covers idea generation, market research, basic business planning, and pitching.</p>
+                        <div class="program-features">
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Idea validation techniques</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Basic financial literacy</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Simple business plan development</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Pitch practice with feedback</span>
+                            </div>
+                        </div>
+                        <button class="program-button">Learn More</button>
+                    </div>
+                </div>
+                
+                <div class="program-card fade-in">
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Advanced Ventures">
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Advanced Ventures</h3>
+                        <p class="program-duration">12 weeks • Ages 13-16</p>
+                        <p class="program-description">For teens ready to launch real businesses with more complex concepts like digital marketing, financial modeling, and scaling.</p>
+                        <div class="program-features">
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Advanced business modeling</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Digital marketing strategies</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Financial projections & analysis</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Investor pitch preparation</span>
+                            </div>
+                        </div>
+                        <button class="program-button">Learn More</button>
+                    </div>
+                </div>
+                
+                <div class="program-card fade-in">
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Social Innovation Lab">
+                    </div>
+                    <div class="program-content">
+                        <h3 class="program-title">Social Innovation Lab</h3>
+                        <p class="program-duration">10 weeks • Ages 10-16</p>
+                        <p class="program-description">Focused on ventures that address social and environmental challenges through entrepreneurial solutions.</p>
+                        <div class="program-features">
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Social impact measurement</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Sustainable business models</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Community needs assessment</span>
+                            </div>
+                            <div class="program-feature">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Grant writing for social ventures</span>
+                            </div>
+                        </div>
+                        <button class="program-button">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: Partners Section -->
+    <section class="partners" id="partners">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Partners & Supporters</h2>
+            <p class="section-subtitle fade-in">We're grateful to collaborate with these organizations that share our commitment to youth empowerment.</p>
+            
+            <div class="partners-grid">
+                <div class="partner-logo fade-in">
+                    <img src="https://via.placeholder.com/150x80/4361ee/ffffff?text=EdTech+Fund" alt="EdTech Fund">
+                </div>
+                <div class="partner-logo fade-in">
+                    <img src="https://via.placeholder.com/150x80/7209b7/ffffff?text=Youth+First" alt="Youth First Foundation">
+                </div>
+                <div class="partner-logo fade-in">
+                    <img src="https://via.placeholder.com/150x80/f72585/ffffff?text=Global+Kids" alt="Global Kids Initiative">
+                </div>
+                <div class="partner-logo fade-in">
+                    <img src="https://via.placeholder.com/150x80/4895ef/ffffff?text=Future+Builders" alt="Future Builders">
+                </div>
+                <div class="partner-logo fade-in">
+                    <img src="https://via.placeholder.com/150x80/4cc9f0/ffffff?text=Innovate+Edu" alt="Innovate Education">
+                </div>
+                <div class="partner-logo fade-in">
+                    <img src="https://via.placeholder.com/150x80/3a0ca3/ffffff?text=NextGen+Ventures" alt="NextGen Ventures">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="cta">
+        <div class="container">
+            <div class="cta-content fade-in">
+                <h2 class="section-title">Ready to Ignite the Entrepreneurial Spirit?</h2>
+                <p class="section-subtitle">Join thousands of young innovators who are already changing the world through entrepreneurship.</p>
+                
+                <div class="cta-buttons">
+                    <button class="cta-button primary-glow">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Enroll in a Program</span>
+                    </button>
+                    <button class="cta-button secondary-glow">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        <span>Become a Mentor</span>
+                    </button>
+                    <button class="cta-button secondary-glow">
+                        <i class="fas fa-donate"></i>
+                        <span>Support Our Mission</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-rocket"></i>
+                        <span>Kidpreneur</span>
+                    </div>
+                    <p class="footer-description">Empowering the next generation of innovators, creators, and change-makers through entrepreneurship education.</p>
+                    
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Programs</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Foundations Program</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Advanced Ventures</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Social Innovation Lab</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Summer Camps</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Virtual Programs</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Learning Materials</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Entrepreneur Toolkit</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Video Lessons</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Project Gallery</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Research & Impact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Our Team</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Careers</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Press & Media</a></li>
+                            <li><a href="#"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-newsletter">
+                        <h3>Stay Updated</h3>
+                        <p>Subscribe to our newsletter for the latest updates, success stories, and program announcements.</p>
+                        
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="Your email address">
+                            <button type="submit" class="newsletter-button">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Kidpreneur. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference or respect OS preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
+            document.body.classList.add('dark-theme');
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        });
+        
+        // Scroll Animation
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    fadeInObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        fadeElements.forEach(element => {
+            fadeInObserver.observe(element);
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

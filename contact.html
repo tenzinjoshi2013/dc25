@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Kidpreneur</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Reuse the same CSS variables and base styles from the main page */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --secondary-dark: #5f079c;
+            --accent: #f72585;
+            --accent-dark: #d91a72;
+            --success: #4cc9f0;
+            --warning: #f9c74f;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #e9ecef;
+            --dark-border: #2d2d2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
+            --shadow-dark: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --shadow-dark-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-accent: linear-gradient(135deg, var(--accent), #b5179e);
+            --gradient-success: linear-gradient(135deg, var(--success), #4895ef);
+            --gradient-warning: linear-gradient(135deg, var(--warning), #f9844a);
+            --gradient-info: linear-gradient(135deg, var(--info), #4cc9f0);
+            --gradient-bg: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            --gradient-dark-bg: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background: var(--gradient-bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+            margin: 0;
+            padding: 0;
+        }
+
+        body.dark-theme {
+            color: var(--dark-text);
+            background: var(--gradient-dark-bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Particle Background */
+        .particle-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            opacity: 0.7;
+        }
+
+        .particle-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .layer-1 {
+            background: radial-gradient(circle at 20% 20%, rgba(67, 97, 238, 0.15) 0%, transparent 50%);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .layer-2 {
+            background: radial-gradient(circle at 80% 60%, rgba(114, 9, 183, 0.1) 0%, transparent 50%);
+            animation: float 25s infinite ease-in-out reverse;
+        }
+
+        .layer-3 {
+            background: radial-gradient(circle at 40% 80%, rgba(247, 37, 133, 0.08) 0%, transparent 50%);
+            animation: float 30s infinite ease-in-out;
+        }
+
+        /* Floating Navigation */
+        .floating-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 15px 30px;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-theme .floating-nav {
+            background: rgba(30, 30, 30, 0.95);
+            box-shadow: var(--shadow-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            padding: 8px 0;
+        }
+
+        .dark-theme .nav-link {
+            color: var(--dark-text);
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background: var(--gradient-primary);
+            transition: var(--transition);
+            border-radius: 3px;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light-gray);
+            color: var(--dark);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .dark-theme .theme-toggle {
+            background: var(--dark-card);
+            color: var(--dark-text);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px) rotate(15deg);
+            box-shadow: var(--shadow);
+        }
+
+        /* Contact Hero Section */
+        .contact-hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            padding: 150px 20px 80px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .contact-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(247, 37, 133, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-title {
+            font-size: 3.8rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: var(--gray);
+            line-height: 1.7;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dark-theme .hero-description {
+            color: rgba(233, 236, 239, 0.8);
+        }
+
+        /* Contact Content */
+        .contact-content {
+            padding: 50px 0 100px;
+            position: relative;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        @media (min-width: 992px) {
+            .contact-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--gradient-primary);
+        }
+
+        .dark-theme .contact-info {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .contact-info-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .dark-theme .contact-info-title {
+            color: var(--dark-text);
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 20px;
+            border-radius: 12px;
+            background: var(--light-gray);
+            transition: var(--transition);
+        }
+
+        .dark-theme .contact-method {
+            background: var(--dark-border);
+        }
+
+        .contact-method:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .dark-theme .contact-method:hover {
+            box-shadow: var(--shadow-dark);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .contact-details h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-size: 1.2rem;
+        }
+
+        .dark-theme .contact-details h3 {
+            color: var(--dark-text);
+        }
+
+        .contact-details p {
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .dark-theme .contact-details p {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .contact-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .contact-link:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--light-gray);
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .dark-theme .social-link {
+            background: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--gradient-primary);
+        }
+
+        .dark-theme .contact-form {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .form-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .form-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .dark-theme .form-title {
+            color: var(--dark-text);
+        }
+
+        .form-subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .dark-theme .form-subtitle {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        @media (min-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+
+        .dark-theme .form-group label {
+            color: var(--dark-text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .dark-theme .form-control {
+            background: var(--dark-bg);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.2);
+        }
+
+        .dark-theme .form-control:focus {
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.3);
+        }
+
+        textarea.form-control {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .form-footer {
+            margin-top: 2.5rem;
+        }
+
+        .submit-btn {
+            position: relative;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            overflow: hidden;
+            min-width: 220px;
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+            background: var(--gradient-primary);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(67, 97, 238, 0.5);
+        }
+
+        .submit-btn.loading {
+            pointer-events: none;
+        }
+
+        .submit-btn.loading span {
+            opacity: 0;
+        }
+
+        .btn-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 5px;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .submit-btn.loading .btn-loader {
+            opacity: 1;
+        }
+
+        .loader-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            animation: loaderPulse 1.5s infinite ease-in-out;
+        }
+
+        .loader-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loader-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 80px 0;
+            background: rgba(248, 249, 250, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            margin: 40px 0;
+        }
+
+        .dark-theme .faq-section {
+            background: rgba(30, 30, 30, 0.7);
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 5px;
+            background: var(--gradient-primary);
+            border-radius: 5px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dark-theme .section-subtitle {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .dark-theme .faq-item {
+            background: var(--dark-card);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .dark-theme .faq-question {
+            color: var(--dark-text);
+        }
+
+        .faq-question:hover {
+            color: var(--primary);
+        }
+
+        .faq-icon {
+            transition: var(--transition);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: var(--gray);
+        }
+
+        .dark-theme .faq-answer {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 0 25px 20px;
+        }
+
+        /* Success Modal */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .success-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            position: relative;
+            transform: translateY(30px);
+            transition: var(--transition);
+            text-align: center;
+            padding: 40px;
+        }
+
+        .dark-theme .modal-content {
+            background: var(--dark-card);
+        }
+
+        .success-modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--gradient-success);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 3rem;
+            color: white;
+            animation: scaleUp 0.5s ease forwards;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .dark-theme .modal-title {
+            color: var(--dark-text);
+        }
+
+        .modal-message {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .dark-theme .modal-message {
+            color: rgba(233, 236, 239, 0.7);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .modal-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-button.primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+        }
+
+        .modal-button.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        .modal-button.secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .modal-button.secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes loaderPulse {
+            0%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            66% {
+                transform: translateY(10px) rotate(-5deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 767px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            
+            .contact-info, .contact-form {
+                padding: 25px;
+            }
+            
+            .contact-method {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .floating-nav {
+                padding: 15px;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Footer */
+.footer {
+    background: var(--gradient-dark-bg);
+    color: var(--dark-text);
+    padding: 80px 0 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(67, 97, 238, 0.1) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.footer::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(247, 37, 133, 0.1) 0%, transparent 70%);
+    z-index: 0;
+}
+
+.footer-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+.footer-brand {
+    margin-bottom: 2rem;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-decoration: none;
+}
+
+.footer-logo i {
+    margin-right: 10px;
+    font-size: 2.2rem;
+}
+
+.footer-description {
+    max-width: 400px;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    color: rgba(233, 236, 239, 0.8);
+}
+
+.footer-social {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.footer-column h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-column h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 3px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-column a {
+    color: rgba(233, 236, 239, 0.8);
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-column a:hover {
+    color: white;
+    padding-left: 5px;
+}
+
+.footer-column a i {
+    font-size: 0.9rem;
+}
+
+.footer-newsletter h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-newsletter h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 3px;
+}
+
+.footer-newsletter p {
+    margin-bottom: 1.5rem;
+    color: rgba(233, 236, 239, 0.8);
+    line-height: 1.7;
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: var(--transition);
+}
+
+.newsletter-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.newsletter-submit {
+    padding: 16px 25px;
+    border: none;
+    border-radius: 12px;
+    background: var(--gradient-primary);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.newsletter-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+}
+
+.footer-bottom {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.footer-bottom-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer-bottom-links a {
+    color: rgba(233, 236, 239, 0.7);
+    text-decoration: none;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.footer-bottom-links a:hover {
+    color: white;
+}
+
+.copyright {
+    color: rgba(233, 236, 239, 0.6);
+    font-size: 0.9rem;
+}
+
+/* Responsive Design for Footer */
+@media (min-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 992px) {
+    .footer-content {
+        grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-bottom-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .newsletter-form {
+        flex-direction: column;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particle-background">
+        <div class="particle-layer layer-1"></div>
+        <div class="particle-layer layer-2"></div>
+        <div class="particle-layer layer-3"></div>
+    </div>
+
+    <!-- Floating Navigation -->
+    <nav class="floating-nav">
+        <div class="nav-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>Kidpreneur</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="ideas.html" class="nav-link">Ideas</a>
+                <a href="resources.html" class="nav-link">Resources</a>
+                <a href="success-stories.html" class="nav-link">Success Stories</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="submit-idea.html" class="cta-button secondary-glow">Submit Idea</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Get In Touch With Us</h1>
+                <p class="hero-description">
+                    Have questions, suggestions, or need support? We'd love to hear from you. Reach out to our team and we'll get back to you as soon as possible.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Content Section -->
+    <section class="contact-content">
+        <div class="container">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h2 class="contact-info-title">Contact Information</h2>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Email Us</h3>
+                            <p>We'll respond within 24 hours</p>
+                            <a href="mailto:support@kidpreneur.com" class="contact-link">support@kidpreneur.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Call Us</h3>
+                            <p>Mon-Fri from 9am to 5pm</p>
+                            <a href="tel:+11234567890" class="contact-link">+1 (123) 456-7890</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Visit Us</h3>
+                            <p>Come say hello at our office</p>
+                            <p>123 Innovation Street, Tech City, TC 12345</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <div class="form-header">
+                        <h2 class="form-title">Send Us a Message</h2>
+                        <p class="form-subtitle">Fill out the form below and we'll get back to you soon</p>
+                    </div>
+                    
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName">Your Name</label>
+                                <input type="text" id="contactName" class="form-control" placeholder="Enter your full name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contactEmail">Email Address</label>
+                                <input type="email" id="contactEmail" class="form-control" placeholder="Enter your email address" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactSubject">Subject</label>
+                            <input type="text" id="contactSubject" class="form-control" placeholder="What is this regarding?" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contactMessage">Your Message</label>
+                            <textarea id="contactMessage" class="form-control" placeholder="Type your message here..." rows="5" required></textarea>
+                        </div>
+                        
+                        <div class="form-footer">
+                            <button type="submit" class="submit-btn">
+                                <span>Send Message</span>
+                                <div class="btn-loader">
+                                    <div class="loader-dot"></div>
+                                    <div class="loader-dot"></div>
+                                    <div class="loader-dot"></div>
+                                </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">
+                Find quick answers to common questions about Kidpreneur and our platform.
+            </p>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How can I submit my idea to Kidpreneur?
+                        <span class="faq-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To submit your idea, simply click on the "Submit Idea" button in the navigation menu. You'll be guided through a step-by-step process to describe your idea, add relevant details, and upload any supporting materials. Once submitted, our team will review it before making it visible to the community.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Is there an age limit to join Kidpreneur?
+                        <span class="faq-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kidpreneur is designed for young innovators aged 8-18. We believe that great ideas can come from anyone, regardless of age. If you're outside this age range but still want to participate, you can join as a mentor or supporter.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How can I protect my idea when sharing it?
+                        <span class="faq-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>While we can't guarantee complete protection for ideas shared on our platform, we recommend only sharing enough information to get valuable feedback without revealing your "secret sauce." For more protection, consider discussing your idea with a patent attorney before sharing it widely.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I collaborate with other young entrepreneurs?
+                        <span class="faq-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! Collaboration is encouraged on Kidpreneur. You can connect with other young entrepreneurs through our platform, comment on each other's ideas, and even form teams to work on projects together. Check out our "Collaborate" section to find potential teammates.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Are there any fees to use Kidpreneur?
+                        <span class="faq-icon"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kidpreneur is completely free for young innovators to use. Our mission is to empower the next generation of entrepreneurs regardless of their financial situation. We're supported by sponsors, grants, and donations to keep the platform accessible to all.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 class="modal-title">Message Sent Successfully!</h2>
+            <p class="modal-message">
+                Thank you for reaching out to us. We've received your message and will get back to you within 24 hours. In the meantime, feel free to explore our resources and community ideas.
+            </p>
+            <div class="modal-actions">
+                <button class="modal-button primary" id="modalHomeButton">Back to Home</button>
+                <button class="modal-button secondary" id="modalCloseButton">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo">
+                    <i class="fas fa-rocket"></i>
+                    <span>Kidpreneur</span>
+                </a>
+                <p class="footer-description">
+                    Empowering the next generation of innovators and entrepreneurs through collaboration, education, and support.
+                </p>
+                <div class="footer-social">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Platform</h3>
+                    <ul>
+                        <li><a href="index.html"><i class="fas fa-chevron-right"></i> Explore Ideas</a></li>
+                        <li><a href="submit-idea.html"><i class="fas fa-chevron-right"></i> Submit Idea</a></li>
+                        <li><a href="resources.html"><i class="fas fa-chevron-right"></i> Resources</a></li>
+                        <li><a href="success-stories.html"><i class="fas fa-chevron-right"></i> Success Stories</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Help Center</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Community</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Forums</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Events</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Mentors</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Partners</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-newsletter">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to our newsletter to receive updates on new ideas, events, and resources for young entrepreneurs.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email">
+                    <button type="submit" class="newsletter-submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-links">
+                <a href="#">Terms of Service</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">Accessibility</a>
+            </div>
+            <p class="copyright">© 2023 Kidpreneur. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+    
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or respect OS preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
+            body.classList.add('dark-theme');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            
+            if (body.classList.contains('dark-theme')) {
+                localStorage.setItem('theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+        
+        // FAQ Accordion Functionality
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item && otherItem.classList.contains('active')) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+        
+        // Form Submission with Validation
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        const successModal = document.getElementById('successModal');
+        const modalCloseButton = document.getElementById('modalCloseButton');
+        const modalHomeButton = document.getElementById('modalHomeButton');
+        
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simple validation
+            const nameInput = document.getElementById('contactName');
+            const emailInput = document.getElementById('contactEmail');
+            const subjectInput = document.getElementById('contactSubject');
+            const messageInput = document.getElementById('contactMessage');
+            
+            let isValid = true;
+            
+            // Reset previous error states
+            [nameInput, emailInput, subjectInput, messageInput].forEach(input => {
+                input.style.borderColor = '';
+            });
+            
+            // Validate name
+            if (!nameInput.value.trim()) {
+                nameInput.style.borderColor = '#f72585';
+                isValid = false;
+            }
+            
+            // Validate email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailInput.value)) {
+                emailInput.style.borderColor = '#f72585';
+                isValid = false;
+            }
+            
+            // Validate subject
+            if (!subjectInput.value.trim()) {
+                subjectInput.style.borderColor = '#f72585';
+                isValid = false;
+            }
+            
+            // Validate message
+            if (!messageInput.value.trim()) {
+                messageInput.style.borderColor = '#f72585';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Show loading state
+                submitBtn.classList.add('loading');
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    // Reset form
+                    contactForm.reset();
+                    
+                    // Hide loading state
+                    submitBtn.classList.remove('loading');
+                    
+                    // Show success modal
+                    successModal.classList.add('active');
+                }, 2000);
+            }
+        });
+        
+        // Modal Close Functionality
+        modalCloseButton.addEventListener('click', () => {
+            successModal.classList.remove('active');
+        });
+        
+        modalHomeButton.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+        
+        // Close modal when clicking outside
+        successModal.addEventListener('click', (e) => {
+            if (e.target === successModal) {
+                successModal.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
